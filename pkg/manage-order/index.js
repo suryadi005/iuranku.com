@@ -4,8 +4,6 @@ const Group = require('../manage-group/models/group')
 const router = express.Router()
 
 function manageOrder (db) {
-    const ordersCollection = db.collection('orders')
-    const groupsCollection = db.collection('groups')
 
     // ######################################################################################### //
     // PAGE //
@@ -28,7 +26,12 @@ function manageOrder (db) {
     });
     // daftar page
     router.get('/daftar', function(req, res) {
-        res.render('pages/daftar');
+        const errorDaftar = req.session.errorDaftar;
+        req.session.errorDaftar = undefined
+        req.session.save(function(err) {})
+
+
+        res.render('pages/daftar', {errorDaftar: errorDaftar});
     });
     // ########################################################################################## //
 
@@ -46,20 +49,23 @@ function manageOrder (db) {
     // create
     router.post('/orders', async (req, res, next) => {
         const layanan = req.body.layanan
+        const session = await db.startSession();
         try {
+            session.startTransaction();
+
             // find or create non full group
             let group = await Group.findOne({
                 layanan,
                 memberCount: { $lt: 5 },
-            })
+            }).session(session)
             if (!group) {
-                group = await Group.create({
+                group = await Group.create([{
                     layanan,
                     memberCount: 1
-                })
+                }], { session })
             } else {
                 group.memberCount += 1
-                await group.save()
+                await group.save({session})
             }
             // get group.id
             const groupId = group.id
@@ -67,12 +73,23 @@ function manageOrder (db) {
             req.body.groupId = groupId
 
             // create order
-            await ordersCollection.insertOne(req.body)
-            res.redirect('/groups/id-group')
+            const order = new Order(req.body)
+            await order.save({session})
+            await session.commitTransaction();
+            res.redirect(`/groups/${groupId}`)
         } catch (e) {
             console.error(e)
-            next(e)
+            await session.abortTransaction();
+            if (e.code ===11000) {
+                req.session.errorDaftar = 'Email telah digunakan'
+            } else {
+                req.session.errorDaftar = 'Terjadi kesalahan, silahkan coba beberapa saat lagi.'
+            }
+            req.session.save(function(err) {})
+            
+            res.redirect('/daftar')
         }
+        session.endSession();
     })
 
     return router

@@ -1,19 +1,32 @@
 const express = require('express')
-
+const Group = require('./models/group')
 const router = express.Router()
 
 function manageGroup (db) {
     const groupsCollection = db.collection('groups')
 
     // Grub page
-    router.get('/groups', function(req, res) {
-        res.render('pages/group');
+    router.get('/group', async function(req, res) {
+        const groups = await Group.find().populate('orders')
+        res.render('pages/group', {
+            groups
+        });
     });
 
     // Grub page
-    router.get('/groups/:groupId', function(req, res) {
-        res.render('pages/group-status');
+    router.get('/groups/:groupId', async function(req, res, next) {
+        const groupId = req.params.groupId
+        const group = await Group.findById(groupId).populate('orders')
+        if (!group) {
+            const error = new Error("Not Found")
+            error.status = 404
+            return next(error)
+        }
+        res.render('pages/group-status', {
+            group
+        });
     });
+
 
     return router
 }

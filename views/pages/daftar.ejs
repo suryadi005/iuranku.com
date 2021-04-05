@@ -13,6 +13,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="jumbotron">
+            <div><%= errorDaftar %></div>
             <h1>Daftar sekarang</h1>
             <form action="/orders" method="POST">
                 <p>Nama depan :<input required type="text" name="namaDepan" id="" placeholder="Silahkan isi nama depan anda"></p>
@@ -22,8 +23,8 @@
                 <p><label for="layanans">Layanan:</label>
                 <input checked type="radio" name="layanan" id="netflix" value="netflix">
                 <label for="netflix"><img src="https://assets.stickpng.com/images/580b57fcd9996e24bc43c529.png" width="100" alt="Waiting for connection"></label>
-                <input type="radio" name="layanan" id="provider" value="provider">
-                <label for="provider"><img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" width="100" alt="Waiting for connection"></label>
+                <input type="radio" name="layanan" id="Spotify" value="Spotify">
+                <label for="Spotify"><img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" width="100" alt="Waiting for connection"></label>
                 <input type="radio" name="layanan" id="youtube" value="youtube" disabled>
                 <label for="youtube"><img src="https://www.pngkey.com/png/full/13-138700_youtube-logo-png-transparent-background.png" alt="Waiting for connection" width="100" style=" filter: grayscale(100%);"></label></p>
                 <p align="center"><button type="submit">Submit</button></p> 

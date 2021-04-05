@@ -5,6 +5,12 @@ const GroupSchema = new mongoose.Schema({
     memberCount: { type: Number, default: 0 },
 });
 
+GroupSchema.virtual('orders', {
+    ref: 'Order', // The model to use
+    localField: '_id', // Find people where `localField`
+    foreignField: 'groupId', // is equal to `foreignField`
+});
+
 const Group = mongoose.model('Group', GroupSchema);
 
 module.exports = Group

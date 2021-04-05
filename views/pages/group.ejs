@@ -14,7 +14,21 @@
     <div class="col-sm-12">
         <div class="jumbotron">
             <h1>Anggota kami</h1>
-            <p>Udah banyak loo</p>
+            <ul>
+                <% for(var i = 0; i < groups.length; i++) {%>
+                  <li class="group">
+                    <span>Group: <%= i+1 %></span>
+                    <div>layanan : <%= groups[i].layanan%></div>
+                    <ul>
+                        <% for(var j = 0; j < groups[i].orders.length; j++) {%>
+                            <li>
+                                <div> Nama : <%= groups[i].orders[j].namaDepan %></div>
+                            </li>
+                        <% } %>
+                    </ul>
+                  </li>
+                <% } %>
+              </ul>
             <p align="center"><button><a href="/daftar"><b>Daftar sekarang</b></a></button></p>
         </div>
     </div>
