@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const OrderSchema = new mongoose.Schema({
+    typeMember:{type: String, required: true},
     namaDepan: { type: String, required: true },
     namaBelakang: { type: String, required: true },
     email: { type: String, required: true },

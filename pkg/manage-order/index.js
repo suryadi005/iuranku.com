@@ -59,10 +59,11 @@ function manageOrder (db) {
                 memberCount: { $lt: 5 },
             }).session(session)
             if (!group) {
-                group = await Group.create([{
+                group = (await Group.create([{
                     layanan,
                     memberCount: 1
-                }], { session })
+                }], { session }))[0]
+
             } else {
                 group.memberCount += 1
                 await group.save({session})
@@ -71,6 +72,7 @@ function manageOrder (db) {
             const groupId = group.id
             // set req.body.groupId = groupId
             req.body.groupId = groupId
+
 
             // create order
             const order = new Order(req.body)
