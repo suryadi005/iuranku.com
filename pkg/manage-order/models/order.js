@@ -7,7 +7,7 @@ const OrderSchema = new mongoose.Schema({
     email: { type: String, required: true },
     noHp: { type: String, required: true },
     layanan: { type: String, required: true },
-    groupId: { type: 'ObjectId', ref: 'Group', required: true },
+    groupId: { type: 'ObjectId', ref: 'Group', required: false, default: null },
     createdAt: { type: Date, default: Date.now},
     status: { 
         type: String, 

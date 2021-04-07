@@ -51,34 +51,60 @@ function manageOrder (db) {
         const layanan = req.body.layanan
         const session = await db.startSession();
         try {
+            let group;
             session.startTransaction();
 
-            // find or create non full group
-            let group = await Group.findOne({
-                layanan,
-                memberCount: { $lt: 5 },
-            }).session(session)
-            if (!group) {
+            if (req.body.typeMember==="host") {
                 group = (await Group.create([{
                     layanan,
                     memberCount: 1
                 }], { session }))[0]
-
-            } else {
-                group.memberCount += 1
+                const orders= await Order.find({groupId:null}).limit(4).session(session)
+                const result = await Order.updateMany({
+                    _id: { $in: orders.map(order => order._id) }
+                }, {
+                    status:'menunggu_pembayaran',
+                    groupId: group.id
+                }).session(session)
+                group.memberCount += result.n
                 await group.save({session})
+
+                console.log({result})
+
+                // create order
+                req.body.groupId = group.id
+                const order = new Order(req.body)
+                await order.save({session})
+
+                await session.commitTransaction();
+            } else {
+                // find or create non full group
+                group = await Group.findOne({
+                    layanan,
+                    memberCount: { $lt: 5 },
+                }).session(session)
+                if (group) {
+                    group.memberCount += 1
+                    await group.save({session})
+                }
+                // get group.id
+                const groupId =  group ? group.id : null
+                // set req.body.groupId = groupId
+                req.body.groupId = groupId
+
+
+                // create order
+                const order = new Order(req.body)
+                await order.save({session})
+                
+                await session.commitTransaction();
+
+                if (!groupId) {
+                    return res.redirect(`/berhasil masuk antrian`)
+                }
             }
-            // get group.id
-            const groupId = group.id
-            // set req.body.groupId = groupId
-            req.body.groupId = groupId
 
-
-            // create order
-            const order = new Order(req.body)
-            await order.save({session})
-            await session.commitTransaction();
-            res.redirect(`/groups/${groupId}`)
+            res.redirect(`/groups/${group.id}`)
         } catch (e) {
             console.error(e)
             await session.abortTransaction();
