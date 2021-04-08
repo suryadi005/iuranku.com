@@ -9,9 +9,10 @@ function manageOrder (db) {
     // PAGE //
     //ADMIN
 
-    router.get('/admin/orders/:orderId/update-status', function(req, res) {
+    router.get('/admin/orders/:orderId/update-status',async function(req, res) {
         const orderId = req.params.orderId
-        res.render('pages/admin/update-order-status-form', { orderId: orderId })
+        const order = await Order.findById(orderId)
+        res.render('pages/admin/update-order-status-form', { order: order })
     })
 
     router.get('/admin/orders', async function(req, res) {
@@ -87,6 +88,55 @@ function manageOrder (db) {
         }
     })
 
+    //update status
+    router.post('/orders/:orderId/update-status', async function (req, res, next) {
+        const session = await db.startSession();
+
+        try {
+            session.startTransaction();
+            
+            const orderId = req.params.orderId
+            const status = req.body.orderStatus
+            const order = await Order.findById(orderId).session(session)
+            order.status = status
+            await order.save({session})
+            if (status === 'menunggu_anggota' && order.typeMember === 'host') {
+                // baca antrian dan jadikan anggota 
+                let group = await Group.findById(order.groupId).session(session)
+                if (!group){
+                    group = (await Group.create([{
+                        layanan: order.layanan,
+                        memberCount: 1
+                    }], { session }))[0]
+        
+                    order.groupId = group.id
+                    await order.save({session})
+                }
+
+                if (group.memberCount<5) {
+                    const orders= await Order.find({groupId:null}).limit( 5 - group.memberCount ).session(session)
+                    const result = await Order.updateMany({
+                        _id: { $in: orders.map(order => order._id) }
+                    }, {
+                        groupId: group.id
+                    }).session(session)
+                    group.memberCount += result.n
+                    await group.save({session})
+                }
+            }
+
+            await session.commitTransaction();
+            res.redirect(`/admin/orders/${orderId}/update-status`)
+        } catch (e) {
+            await session.abortTransaction();
+            console.error(e)
+            next(e)
+        } finally {
+            session.endSession();
+        }
+        
+    })
+
     // create
     router.post('/orders', async (req, res, next) => {
         const layanan = req.body.layanan
@@ -96,22 +146,6 @@ function manageOrder (db) {
             session.startTransaction();
 
             if (req.body.typeMember==="host") {
-                group = (await Group.create([{
-                    layanan,
-                    memberCount: 1
-                }], { session }))[0]
-                // const orders= await Order.find({groupId:null}).limit(4).session(session)
-                // const result = await Order.updateMany({
-                //     _id: { $in: orders.map(order => order._id) }
-                // }, {
-                //     status:'menunggu_pembayaran',
-                //     groupId: group.id
-                // }).session(session)
-                // group.memberCount += result.n
-                // await group.save({session})
-
-                // create order
-                req.body.groupId = group.id
                 const order = new Order(req.body)
                 await order.save({session})
 
@@ -156,8 +190,9 @@ function manageOrder (db) {
             req.session.save(function(err) {})
             
             res.redirect('/daftar')
+        } finally {
+            session.endSession();
         }
-        session.endSession();
     })
 
     return router

@@ -14,17 +14,17 @@
     <div class="col-sm-12">
         <div class="jumbotron">
             <h1>Update Order Status : </h1>
-            <form action="/orders" method="POST">
-                <p>Order ID :<input required type="text" name="orderId" id="orderId"  value="<%= orderId %>" disabled></p>
+            <form action="/orders/<%= order.id %>/update-status" method="POST">
+                <p>Order ID :<input required type="text" name="orderId" id="orderId"  value="<%= order.id %>" disabled></p>
                 <p><label for="orderStatus">Order Status :</label>
 
-                <input checked type="radio" name="orderStatus" id="menunggu_pembayaran" value="menunggu_pembayaran">
+                <input <%= order.status === 'menunggu_pembayaran' ? 'checked' : ''  %> type="radio" name="orderStatus" id="menunggu_pembayaran" value="menunggu_pembayaran">
                 <label for="regular">Menunggu pembayaran</label>
 
-                <input type="radio" name="orderStatus" id="menunggu_anggota" value="menunggu_anggota">
+                <input <%= order.status === 'menunggu_anggota' ? 'checked' : ''  %>  type="radio" name="orderStatus" id="menunggu_anggota" value="menunggu_anggota">
                 <label for="host">Menunggu anggota</label>
 
-                <input type="radio" name="orderStatus" id="active" value="active">
+                <input <%= order.status === 'active' ? 'checked' : ''  %>  type="radio" name="orderStatus" id="active" value="active">
                 <label for="host">Active</label></p>
 
                 <p><button type="submit">Submit</button></p> 
