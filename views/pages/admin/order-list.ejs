@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../../partials/header'); %>
+</header>
+
+<main>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="jumbotron">
+            <h1>Order List</h1>
+            <table>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama </th>
+                    <th>Layanan</th>
+                    <th>Email</th>
+                    <th>No Hp</th>
+                    <th>Action</th>
+                </tr>
+                <% for(var i = 0; i <orders.length; i++) {%>
+                    <tr>
+                        <td><%= (i+1) + offset %> </td>
+                        <td><%= orders[i].namaDepan %> <%= orders[i].namaBelakang %></td>
+                        <td><%= orders[i].layanan %></td>
+                        <td><%= orders[i].email %></td>
+                        <td><%= orders[i].noHp %></td>
+                        <td>
+                            <a href="/admin/orders/<%= orders[i].id %>/update-status" type="button" >Update status</a>
+                        </td>
+                    </tr>
+                <% } %>
+                
+            </table>
+            <div>
+                <% for(var i = 1; i<=totalPages; i++) {%>
+                    <a href="/admin/orders?offset=<%= (i-1)*limit %>&limit=<%= limit %>"><%= i %> </a>    
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+</div>
+</main>
+
+<footer>
+    <%- include('../../partials/footer'); %>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../../partials/header'); %>
+</header>
+
+<main>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="jumbotron">
+            <h1>Update Order Status : </h1>
+            <form action="/orders" method="POST">
+                <p>Order ID :<input required type="text" name="orderId" id="orderId"  value="<%= orderId %>" disabled></p>
+                <p><label for="orderStatus">Order Status :</label>
+
+                <input checked type="radio" name="orderStatus" id="menunggu_pembayaran" value="menunggu_pembayaran">
+                <label for="regular">Menunggu pembayaran</label>
+
+                <input type="radio" name="orderStatus" id="menunggu_anggota" value="menunggu_anggota">
+                <label for="host">Menunggu anggota</label>
+
+                <input type="radio" name="orderStatus" id="active" value="active">
+                <label for="host">Active</label></p>
+
+                <p><button type="submit">Submit</button></p> 
+            </form> 
+        </div>
+    </div>
+
+</div>
+</main>
+
+<footer>
+    <%- include('../../partials/footer'); %>
+</footer>
+
+</body>
+</html>
