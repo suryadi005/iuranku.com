@@ -13,6 +13,7 @@ function manageCron (db) {
             date.setMinutes(date.getMinutes() - maxAgeMinute)
             const expiredOrderQuery = {
                 status: 'menunggu_pembayaran',
+                groupId : { $ne: null },
                 createdAt: {
                     $lte: date 
                 }

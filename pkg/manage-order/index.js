@@ -8,6 +8,11 @@ function manageOrder (db) {
     // ######################################################################################### //
     // PAGE //
 
+    // berhasil mengantri
+    router.get('/pages/berhasilMengantri', function(req, res) {
+        res.render('pages/berhasilMengantri');
+    })
+
     // index page
     router.get('/', function(req, res) {
         res.render('pages/index', {});
@@ -100,7 +105,7 @@ function manageOrder (db) {
                 await session.commitTransaction();
 
                 if (!groupId) {
-                    return res.redirect(`/berhasil masuk antrian`)
+                    return res.redirect(`/berhasilMengantri`)
                 }
             }
 
