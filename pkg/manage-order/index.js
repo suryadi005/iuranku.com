@@ -9,8 +9,8 @@ function manageOrder (db) {
     // PAGE //
 
     // berhasil mengantri
-    router.get('/pages/berhasilMengantri', function(req, res) {
-        res.render('pages/berhasilMengantri');
+    router.get('/berhasil-mengantri-regular', function(req, res) {
+        res.render('pages/berhasil-mengantri-regular');
     })
 
     // index page
@@ -105,7 +105,7 @@ function manageOrder (db) {
                 await session.commitTransaction();
 
                 if (!groupId) {
-                    return res.redirect(`/berhasilMengantri`)
+                    return res.redirect(`/berhasil-mengantri-regular`)
                 }
             }
 
