@@ -15,11 +15,11 @@
         <div class="jumbotron">
             <div><%= errorDaftar %></div>
             <h1>Daftar sekarang</h1>
-            <form action="/orders" method="POST">
+            <form action="/orders" method="POST" id="daftarForm">
                 <p>Nama depan :<input required type="text" name="namaDepan" id="" placeholder="Silahkan isi nama depan anda"></p>
                 <p>Nama belakang    : <input required type="text" name="namaBelakang" id="" placeholder="Silahkan isi nama belakang anda"></p>
-                <p>Email    : <input required type="text" name="email" id="" placeholder="xxx@gmail.com"></p>
-                <p>No Hp    : <input required type="text" name="noHp" placeholder="08xx-xxxx-xxxx"></p>
+                <p>Email    : <input required type="email" name="email" id="" placeholder="xxx@gmail.com"></p>
+                <p>No Hp    : <input required type="text" name="noHp" placeholder="08xxxxxxxxxx atau +62xxxxxxxxxxx" pattern="^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{3,9}$"></p>
 
                 <p><label for="layanans">Layanan:</label>
                 <input checked type="radio" name="layanan" id="netflix" value="netflix">
@@ -34,7 +34,7 @@
                 <label for="regular">Regular</label>
                 <input type="radio" name="typeMember" id="host" value="host">
                 <label for="host">Host</label></p>
-                <p align="center"><button type="submit">Submit</button></p> 
+                <p align="center"><button id="tombolDaftar" type="submit">Submit</button></p> 
             </form> 
         </div>
     </div>
@@ -45,6 +45,17 @@
 <footer>
     <%- include('../partials/footer'); %>
 </footer>
-
+<script>
+    const daftarForm = document.getElementById('daftarForm')
+    const tombolDaftar = document.getElementById('tombolDaftar')
+    tombolDaftar.addEventListener('click', function() {
+        if (daftarForm.reportValidity() === true) {
+            tombolDaftar.setAttribute('disabled', true)
+            daftarForm.submit()
+        }
+ 
+       
+    })
+</script>
 </body>
 </html>

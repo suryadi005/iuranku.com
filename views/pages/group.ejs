@@ -1,43 +1,186 @@
+<% var netflixGroups = groups.filter(function (group) {
+    return group.layanan === 'netflix'
+}); %>
+
+<% var spotifyGroups = groups.filter(function (group) {
+    return group.layanan === 'Spotify'
+}); %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <%- include('../partials/head'); %>
+    <script src="/external-scripts/circle-progress.js"></script>
+    <style>
+    .circle-progress-value {
+	stroke-width: 6px;
+	stroke: hsl(100, 100%, 60%);
+	stroke-dasharray: 0.6 3;
+}
+.circle-progress-circle {
+	stroke-width: 6px;
+	stroke: #ddd;
+	stroke-dasharray: 0.6 3;
+	stroke-dashoffset: 1.6;
+}
+.circle-progress-text {
+	font-family: "Gotham Rounded Light";
+	fill: hsl(100, 81%, 55%);
+	font-size: 26px;
+}
+
+.circle-progress{
+    margin: 0 auto;
+    margin-top: 25px;
+}
+    </style>
 </head>
-<body class="container">
+<body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
 
-<header>
     <%- include('../partials/header'); %>
-</header>
 
-<main>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="jumbotron">
-            <h1>Anggota kami</h1>
-            <ul>
-                <% for(var i = 0; i < groups.length; i++) {%>
-                  <li class="group">
-                    <span>Group: <%= i+1 %></span>
-                    <div>layanan : <%= groups[i].layanan%></div>
-                    <ul>
-                        <% for(var j = 0; j < groups[i].orders.length; j++) {%>
+
+    <main>
+        <div class="pt-24">
+            <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+              <!--Left Col-->
+              <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
+                <p class="uppercase tracking-loose w-full">Masih ragu?</p>
+                <h1 class="my-4 text-5xl font-bold leading-tight">
+                    Bergabunglah dengan ribuan pengguna iuranku lainnya
+                </h1>
+                <a href="/daftar" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                  Daftar
+                </a>
+              </div>
+              <!--Right Col-->
+              <div class="w-full md:w-3/5 py-6 text-center">
+                <img class="w-full md:w-4/5 z-50" src="/images/hero.png">
+              </div>
+            </div>
+          </div>
+<section class="text-gray-600 body-font overflow-hidden bg-white border-b py-8">
+    <div class="container mx-auto">
+        <div class="flex flex-col text-center w-full mb-20">
+
+
+            <!-- <div
+                class="flex mx-auto border-2 border-indigo-500 rounded overflow-hidden mt-6"
+            >
+                <button
+                    class="py-1 px-4 bg-indigo-500 text-white focus:outline-none"
+                >
+                    Monthly
+                </button>
+                <button class="py-1 px-4 focus:outline-none">Annually</button>
+            </div> -->
+        </div>
+        <div class="flex flex-wrap justify-center">
+            <div class="p-4 xl:w-1/4 md:w-1/2 w-7/12 mb-12" >
+                <div
+                    class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
+                    style="background: black;"
+                >
+                <img src="/images/netflix.jpg" alt="spotify-logo" style="object-fit:scale-down; height:100%;">
+                </div>
+            </div>
+            <% for(var i = 0; i < netflixGroups.length; i++) {%>
+            <div class="p-4 xl:w-1/4 md:w-1/2 w-7/12 mb-12">
+                <div
+                    class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
+                >
+                    <span
+                        class="bg-indigo-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl"
+                        ><%= netflixGroups[i].layanan%></span
+                    >
+                    <div
+                        class="h-48"
+                        style="
+                            background-image: url(image.png);
+                        "
+                    >
+                        <div class="text-4xl text-gray-900 mt-4 ml-4">Group <%= i + 1 %></div>
+                        <div class="progress-<%= netflixGroups[i].id%>"></div>
+                        <script>
+                            new CircleProgress('.progress-<%= netflixGroups[i].id%>', {
+                                max: 5,
+                                value: parseInt('<%= netflixGroups[i].memberCount %>'),
+                                textFormat: 'percent',
+                            });
+                            </script>
+                    </div>
+                    <div
+                        class="pt-8 pl-4 pr-4 flex rounded-lg items-center text-gray-900"
+                    >
+                    <ul class="text-gray-800 text-base px-6 mb-5"> 
+                        <% for(var j = 0; j < netflixGroups[i].orders.length; j++) {%>
                             <li>
-                                <div> Nama : <%= groups[i].orders[j].namaDepan %></div>
+                                <div> <%= netflixGroups[i].orders[j].namaDepan %></div>
                             </li>
                         <% } %>
                     </ul>
-                  </li>
-                <% } %>
-              </ul>
+                    </div>
+                </div>
+                
+            </div>
+            <% } %>
         </div>
-    </div>
 
-</div>
-</main>
+        <!-- spotify -->
+        <div class="flex flex-wrap justify-center">
+            <div class="p-4 xl:w-1/4 md:w-1/2 w-7/12 mb-12">
+                <div
+                    class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
+                    style="background: black;"
+                >
+                <img src="/images/spotify.png" alt="spotify-logo" style="object-fit:scale-down; height:100%;">
+                </div>
+            </div>
+            <% for(var i = 0; i < spotifyGroups.length; i++) {%>
+            <div class="p-4 xl:w-1/4 md:w-1/2 w-7/12 mb-12">
+                <div
+                    class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
+                >
+                    <span
+                        class="bg-indigo-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl"
+                        ><%= spotifyGroups[i].layanan%></span
+                    >
+                    <div
+                        class="h-48"
+                        style="
+                            background-image: url(image.png);
+                        "
+                    >
+                        <div class="text-4xl text-gray-900 mt-4 ml-4">Group <%= i + 1 %></div>
+                        <div class="progress-<%= spotifyGroups[i].id%>"></div>
+                        <script>
+                            new CircleProgress('.progress-<%= spotifyGroups[i].id%>', {
+                                max: 5,
+                                value: parseInt('<%= spotifyGroups[i].memberCount %>'),
+                                textFormat: 'percent',
+                            });
+                            </script>
+                    </div>
+                    <div
+                        class="pt-8 pl-4 pr-4 flex rounded-lg items-center text-gray-900"
+                    >
+                    <ul class="text-gray-800 text-base px-6 mb-5"> 
+                        <% for(var j = 0; j < spotifyGroups[i].orders.length; j++) {%>
+                            <li>
+                                <div> <%= spotifyGroups[i].orders[j].namaDepan %></div>
+                            </li>
+                        <% } %>
+                    </ul>
+                    </div>
+                </div>
+                
+            </div>
+            <% } %>
+        </div>
+    </main>
 
-<footer>
-    <%- include('../partials/footer'); %>
-</footer>
-
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
 </body>
 </html>

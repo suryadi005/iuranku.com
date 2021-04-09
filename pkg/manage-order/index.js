@@ -114,7 +114,7 @@ function manageOrder (db) {
                 }
 
                 if (group.memberCount<5) {
-                    const orders= await Order.find({groupId:null}).limit( 5 - group.memberCount ).session(session)
+                    const orders= await Order.find({groupId:null, layanan:order.layanan}).limit( 5 - group.memberCount ).session(session)
                     const result = await Order.updateMany({
                         _id: { $in: orders.map(order => order._id) }
                     }, {
