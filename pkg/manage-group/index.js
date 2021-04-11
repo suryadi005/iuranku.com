@@ -15,16 +15,22 @@ function manageGroup (db) {
 
     // Grub page
     router.get('/groups/:groupId', async function(req, res, next) {
-        const groupId = req.params.groupId
-        const group = await Group.findById(groupId).populate('orders')
-        if (!group) {
-            const error = new Error("Not Found")
+        try {
+            const groupId = req.params.groupId
+            const group = await Group.findById(groupId).populate('orders')
+            if (!group) {
+                const error = new Error("Not Found")
+                error.status = 404
+                return next(error)
+            }
+            res.render('pages/group-status', {
+                group
+            });
+        }catch(error) {
             error.status = 404
-            return next(error)
+            next(error)
         }
-        res.render('pages/group-status', {
-            group
-        });
+        
     });
 
 

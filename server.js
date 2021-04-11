@@ -1,8 +1,10 @@
+require('dotenv').config()
 //express
 const mongoose = require('mongoose');
 const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
+const basicAuth = require('express-basic-auth')
 // modules
 const manageOrder = require('./pkg/manage-order')
 const manageGroup = require('./pkg/manage-group')
@@ -12,7 +14,7 @@ const path = require('path');
 
 const app = express()
 
-var connectionString='mongodb+srv://suryadi:belek005@cluster0.tqjdl.mongodb.net/iuranku?retryWrites=true&w=majority'
+var connectionString = process.env.MONGODB_CONNECTION_STRING
 
 mongoose.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -24,9 +26,14 @@ const sessionMiddleware = session({
     saveUninitialized: true,
     cookie: {secure: false }
 })
+const basicAuthMiddleware = basicAuth({
+    challenge: true,
+    users: { [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASSWORD }
+})
 
 app.set('view engine', 'ejs')
 app.set('trust proxy', 1 )
+app.use('/admin', basicAuthMiddleware)
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(sessionMiddleware)
 app.use(bodyParser.json())
@@ -44,10 +51,15 @@ db.once('open', function() {
     app.use(manageOrder(db))
     app.use(manageGroup(db))
     app.use(manageCron(db))
+    //Not found
+    app.use(function ( req, res, next) {
+        res.render('pages/error404')
+    })
     // error
     app.use(function (error, req, res, next) {
         console.error(error.stack)
         res.status(error.status || 500)
+        console.log({error})
         if (error.status === 404) {
             res.render('pages/error404')
         } else {

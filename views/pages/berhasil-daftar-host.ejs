@@ -3,21 +3,36 @@
 <head>
     <%- include('../partials/head'); %>
 </head>
-<body class="container">
+<body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
+
 
 <header>
     <%- include('../partials/header'); %>
 </header>
 
 <main>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="jumbotron">
-            <h1>Selamat anda berhasil menjadi host, silahkan lakukan pembayaran untuk melanjutkan tahap berikutnya</h1>
+    <div class="pt-24">
+        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+          <!--Left Col-->
+          <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
+            <h1 class="my-4 text-5xl font-bold leading-tight">
+                Selamat anda berhasil menjadi host
+            </h1>
+            <div class="leading-normal text-2xl mb-8">
+                Silahkan lakukan pembayaran untuk melanjutkan tahap berikutnya, kami akan segera menghubungi anda.
+            </div>
+            <a href="/" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+              Kembali ke halaman awal
+            </a>
+          </div>
+          <!--Right Col-->
+          <div class="w-full md:w-3/5 py-6 text-center">
+            <div class="w-full md:w-4/5 z-50">
+                <%- include('../partials/sukses-image') %>
+            </div>
+          </div>
         </div>
-    </div>
-
-</div>
+      </div>
 </main>
 
 <footer>

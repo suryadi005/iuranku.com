@@ -8,8 +8,7 @@ function manageOrder (db) {
     // ######################################################################################### //
     // PAGE //
     //ADMIN
-
-    router.get('/admin/orders/:orderId/update-status',async function(req, res) {
+    router.get('/admin/orders/:orderId/update-status', async function(req, res) {
         const orderId = req.params.orderId
         const order = await Order.findById(orderId)
         res.render('pages/admin/update-order-status-form', { order: order })
@@ -38,6 +37,36 @@ function manageOrder (db) {
             totalPages: totalPages,
             currentPage: currentPage
         });
+    })
+
+     //user-host-info-page
+     router.get('/user-host-info', function(req, res) {
+        res.render('pages/user-host-info');
+    })
+
+    //privacy-page
+    router.get('/privacy', function(req, res) {
+        res.render('pages/privacy');
+    })
+
+       //contact-us-page
+       router.get('/contact-us', function(req, res) {
+        res.render('pages/contact-us');
+    })
+
+       //terms-page
+       router.get('/terms', function(req, res) {
+        res.render('pages/terms');
+    })
+
+    //faq-page
+    router.get('/faq', function(req, res) {
+        res.render('pages/faq');
+    })
+
+    //about-page
+    router.get('/about', function(req, res) {
+        res.render('pages/about');
     })
 
     // berhasil mengantri-regular

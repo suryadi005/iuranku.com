@@ -1,11 +1,14 @@
 <% var netflixGroups = groups.filter(function (group) {
-    return group.layanan === 'netflix'
+    return group.layanan === 'Netflix'
 }); %>
 
 <% var spotifyGroups = groups.filter(function (group) {
     return group.layanan === 'Spotify'
 }); %>
 
+<% var youtubeGroups = groups.filter(function (group) {
+    return group.layanan === 'Youtube'
+}); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,9 +48,8 @@
             <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
               <!--Left Col-->
               <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-                <p class="uppercase tracking-loose w-full">Masih ragu?</p>
                 <h1 class="my-4 text-5xl font-bold leading-tight">
-                    Bergabunglah dengan ribuan pengguna iuranku lainnya
+                    Bergabunglah dengan ratusan pengguna iuranku lainnya
                 </h1>
                 <a href="/daftar" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                   Daftar
@@ -55,7 +57,7 @@
               </div>
               <!--Right Col-->
               <div class="w-full md:w-3/5 py-6 text-center">
-                <img class="w-full md:w-4/5 z-50" src="/images/hero.png">
+                <%- include('../partials/groub-page-image') %>
               </div>
             </div>
           </div>
@@ -78,8 +80,8 @@
         <div class="flex flex-wrap justify-center">
             <div class="p-4 xl:w-1/4 md:w-1/2 w-7/12 mb-12" >
                 <div
-                    class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
-                    style="background: black;"
+                    class="bg-gray-50 h-full rounded-lg flex flex-col relative overflow-hidden shadow-xl"
+                    style="background: black; height: 388px; width: 100%;"
                 >
                 <img src="/images/netflix.jpg" alt="spotify-logo" style="object-fit:scale-down; height:100%;">
                 </div>
@@ -130,8 +132,8 @@
         <div class="flex flex-wrap justify-center">
             <div class="p-4 xl:w-1/4 md:w-1/2 w-7/12 mb-12">
                 <div
-                    class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
-                    style="background: black;"
+                    class="bg-gray-50 h-full rounded-lg flex flex-col relative overflow-hidden shadow-xl"
+                    style="background: black; height: 388px; width: 100%;"
                 >
                 <img src="/images/spotify.png" alt="spotify-logo" style="object-fit:scale-down; height:100%;">
                 </div>
@@ -168,6 +170,58 @@
                         <% for(var j = 0; j < spotifyGroups[i].orders.length; j++) {%>
                             <li>
                                 <div> <%= spotifyGroups[i].orders[j].namaDepan %></div>
+                            </li>
+                        <% } %>
+                    </ul>
+                    </div>
+                </div>
+                
+            </div>
+            <% } %>
+        </div>
+
+        <!-- YouTube -->
+        <div class="flex flex-wrap justify-center">
+            <div class="p-4 xl:w-1/4 md:w-1/2 w-7/12 mb-12">
+                <div
+                    class="bg-gray-50 h-full rounded-lg flex flex-col relative overflow-hidden shadow-xl"
+                    style="background: black; height: 388px; width: 100%;"
+                >
+                <img src="/images/youtube.png" alt="spotify-logo" style="object-fit:scale-down; height:100%;">
+                </div>
+            </div>
+            <% for(var i = 0; i < youtubeGroups.length; i++) {%>
+            <div class="p-4 xl:w-1/4 md:w-1/2 w-7/12 mb-12">
+                <div
+                    class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
+                >
+                    <span
+                        class="bg-indigo-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl"
+                        ><%= youtubeGroups[i].layanan%></span
+                    >
+                    <div
+                        class="h-48"
+                        style="
+                            background-image: url(image.png);
+                        "
+                    >
+                        <div class="text-4xl text-gray-900 mt-4 ml-4">Group <%= i + 1 %></div>
+                        <div class="progress-<%= youtubeGroups[i].id%>"></div>
+                        <script>
+                            new CircleProgress('.progress-<%= youtubeGroups[i].id%>', {
+                                max: 5,
+                                value: parseInt('<%= youtubeGroups[i].memberCount %>'),
+                                textFormat: 'percent',
+                            });
+                            </script>
+                    </div>
+                    <div
+                        class="pt-8 pl-4 pr-4 flex rounded-lg items-center text-gray-900"
+                    >
+                    <ul class="text-gray-800 text-base px-6 mb-5"> 
+                        <% for(var j = 0; j < youtubeGroups[i].orders.length; j++) {%>
+                            <li>
+                                <div> <%= youtubeGroups[i].orders[j].namaDepan %></div>
                             </li>
                         <% } %>
                     </ul>

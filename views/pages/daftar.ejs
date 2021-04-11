@@ -3,43 +3,150 @@
 <head>
     <%- include('../partials/head'); %>
 </head>
-<body class="container">
+<body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
 
 <header>
     <%- include('../partials/header'); %>
 </header>
 
 <main>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="jumbotron">
-            <div><%= errorDaftar %></div>
-            <h1>Daftar sekarang</h1>
-            <form action="/orders" method="POST" id="daftarForm">
-                <p>Nama depan :<input required type="text" name="namaDepan" id="" placeholder="Silahkan isi nama depan anda"></p>
-                <p>Nama belakang    : <input required type="text" name="namaBelakang" id="" placeholder="Silahkan isi nama belakang anda"></p>
-                <p>Email    : <input required type="email" name="email" id="" placeholder="xxx@gmail.com"></p>
-                <p>No Hp    : <input required type="text" name="noHp" placeholder="08xxxxxxxxxx atau +62xxxxxxxxxxx" pattern="^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{3,9}$"></p>
+    <div class="pt-24">
+        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+            <!--Left Col-->
+            <div class="w-full md:w-3/6 py-6 text-center">
+                <div class="w-full md:w-4/5 z-50">
+                    <%- include('../partials/daftar-image') %>
+                </div>
+            </div>
 
-                <p><label for="layanans">Layanan:</label>
-                <input checked type="radio" name="layanan" id="netflix" value="netflix">
-                <label for="netflix"><img src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c529.png" width="100" alt="Waiting for connection"></label>
-                <input type="radio" name="layanan" id="Spotify" value="Spotify">
-                <label for="Spotify"><img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" width="100" alt="Waiting for connection"></label>
-                <input type="radio" name="layanan" id="youtube" value="youtube" disabled>
-                <label for="youtube"><img src="https://www.pngkey.com/png/full/13-138700_youtube-logo-png-transparent-background.png" alt="Waiting for connection" width="100" style=" filter: grayscale(100%);"></label></p>
-                
-                <p><label for="typeMember">Daftar sebagai :</label>
-                <input checked type="radio" name="typeMember" id="regular" value="regular">
-                <label for="regular">Regular</label>
-                <input type="radio" name="typeMember" id="host" value="host">
-                <label for="host">Host</label></p>
-                <p align="center"><button id="tombolDaftar" type="submit">Submit</button></p> 
-            </form> 
+            <!--Right Col-->
+            <div class="flex flex-col w-full md:w-3/6 justify-center items-start text-center md:text-left">
+
+                <div class="flex items-center min-h-screen dark:bg-gray-900" style="width: 100%;">
+                    <div class="container mx-auto">
+                        <div class="mx-auto my-10 bg-white p-5 rounded-md shadow-sm">
+                            <div class="text-center">
+                                <h1 class="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200">Daftar sekarang</h1>
+                                <p class="text-gray-400 dark:text-gray-400">Silahkan isi form dibawah ini.</p>
+                            </div>
+                            <div class="m-7 text-gray-900">
+                                <form action="/orders" method="POST" id="daftarForm">
+                                    <div class="mb-6">
+                                        <label for="namaDepan" class="block mb-2 text-sm text-gray-600 dark:text-gray-400">Nama Depan</label>
+                                        <input type="text" name="namaDepan" id="namaDepan" placeholder="Masukkan nama depan anda" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
+                                    </div>
+                                    <div class="mb-6">
+                                        <label for="namaBelakang" class="block mb-2 text-sm text-gray-600 dark:text-gray-400">Nama Belakang</label>
+                                        <input type="text" name="namaBelakang" id="namaBelakang" placeholder="Masukkan nama belakang anda" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
+                                    </div>
+                                    <div class="mb-6">
+                                        <label for="email" class="block mb-2 text-sm text-gray-600 dark:text-gray-400">Email</label>
+                                        <input type="email" name="email" id="email" placeholder="xxx@company.com" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
+                                    </div>
+                                    <div class="mb-6">
+    
+                                        <label for="noHp" class="text-sm text-gray-600 dark:text-gray-400">No Handphone ( Whatsapp )    </label>
+                                        <input required type="text" name="noHp" id="noHp" placeholder="08xxxxxxxxxx atau +62xxxxxxxxxxx" pattern="^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{3,9}$" class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500">
+                                    </div>
+                                    <div class="mb-6">
+                                        <label class="block mb-2 text-sm text-gray-600 dark:text-gray-400" for="layanans">Layanan:</label>
+                                        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row">
+                                            
+                                        <div class="flex flex-col w-full md:w-2/6">
+                                            <label class="inline-flex items-center mt-3" for="netflix">
+                                                <input class="form-radio h-5 w-5 text-gray-600" checked type="radio" name="layanan" id="netflix" value="Netflix">
+                                                <img src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c529.png" style="width: 100px; height: 40px; object-fit: contain; margin-left: 8px;" alt="Waiting for connection">
+                                            </label>
+                                        </div>
+                                        <div class="flex flex-col w-full md:w-2/6">
+                                            <label class="inline-flex items-center mt-3" for="Spotify">
+                                                <input class="form-radio h-5 w-5 text-gray-600" type="radio" name="layanan" id="Spotify" value="Spotify">
+                                                <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" style="width: 100px; height: 40px; object-fit: contain; margin-left: 8px;" alt="Waiting for connection">
+                                            </label>
+                                        </div>
+                                        <div class="flex flex-col w-full md:w-2/6">
+                                            <label class="inline-flex items-center mt-3" for="youtube">
+                                                <input class="form-radio h-5 w-5 text-gray-600" type="radio" name="layanan" id="youtube" value="Youtube" >
+                                                <img src="https://www.pngkey.com/png/full/13-138700_youtube-logo-png-transparent-background.png" alt="Waiting for connection" style="width: 100px; height: 40px; object-fit: contain; margin-left: 8px; ">
+                                            </label>
+                                        </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="mb-6">
+                                        <label class="block mb-2 text-sm text-gray-600 dark:text-gray-400" for="typeMember">Daftar sebagai :</label>
+                                        <div>
+                                            <label class="inline-flex items-center mt-3">
+                                                <input type="radio" class="form-radio h-5 w-5 text-gray-600" checked name="typeMember" id="regular" value="regular"><span class="ml-2 text-gray-700">Regular</span>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label class="inline-flex items-center mt-3">
+                                                <input type="radio" class="form-radio h-5 w-5 text-gray-600" name="typeMember" id="host" value="host"><span class="ml-2 text-gray-700">Host</span>
+                                            </label>
+                                        </div>   
+                                    </div>
+                                    <div class="mb-6">
+                                        <button id="tombolDaftar" type="submit" class="w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none">Daftar</button>
+                                    </div>
+                                    <p class="text-base text-center text-gray-400" id="result">
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <script>
+                const form = document.getElementById('daftarForm');
+                const result = document.getElementById('result');
+    
+                form.addEventListener('submit', function(e) {
+                    const formData = new FormData(form);
+                    e.preventDefault();
+                    var object = {};
+                    formData.forEach((value, key) => {
+                        object[key] = value
+                    });
+                    var json = JSON.stringify(object);
+                    result.innerHTML = "Please wait..."
+    
+                    fetch('https://api.web3forms.com/submit', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: json
+                        })
+                        .then(async (response) => {
+                            let json = await response.json();
+                            if (response.status == 200) {
+                                result.innerHTML = json.message;
+                                result.classList.remove('text-gray-500');
+                                result.classList.add('text-green-500');
+                            } else {
+                                console.log(response);
+                                result.innerHTML = json.message;
+                                result.classList.remove('text-gray-500');
+                                result.classList.add('text-red-500');
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            result.innerHTML = "Something went wrong!";
+                        })
+                        .then(function() {
+                            form.reset();
+                            setTimeout(() => {
+                                result.style.display = "none"; 
+                            }, 5000);
+                        });
+                })
+                </script>
+            </div>
         </div>
     </div>
-
-</div>
 </main>
 
 <footer>

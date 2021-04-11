@@ -3,36 +3,66 @@
 <head>
     <%- include('../../partials/head'); %>
 </head>
-<body class="container">
+<body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
+
 
 <header>
     <%- include('../../partials/header'); %>
 </header>
 
 <main>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="jumbotron">
-            <h1>Update Order Status : </h1>
-            <form action="/orders/<%= order.id %>/update-status" method="POST">
-                <p>Order ID :<input required type="text" name="orderId" id="orderId"  value="<%= order.id %>" disabled></p>
-                <p><label for="orderStatus">Order Status :</label>
+    <!--Right Col-->
+    <div class="flex flex-col w-full md:w-3/6 justify-center items-start text-center md:text-left">
 
-                <input <%= order.status === 'menunggu_pembayaran' ? 'checked' : ''  %> type="radio" name="orderStatus" id="menunggu_pembayaran" value="menunggu_pembayaran">
-                <label for="regular">Menunggu pembayaran</label>
+        <div class="flex items-center min-h-screen dark:bg-gray-900" style="width: 100%;">
+            <div class="container mx-auto">
+                <div class="mx-auto my-10 bg-white p-5 rounded-md shadow-sm">
+                    <div class="text-center">
+                        <h1 class="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200">Update order list</h1>
+                        <p class="text-gray-400 dark:text-gray-400">Silahkan ganti status order</p>
+                    </div>
+                    <div class="m-7 text-gray-900">
+                        <form action="/orders/<%= order.id %>/update-status" method="POST" id="updateStatus">
+                            <div class="mb-6">
+                                <label for="namaDepan" class="block mb-2 text-sm text-gray-600 dark:text-gray-400">Order ID :</label>
+                                <input disabled type="text" name="namaDepan" id="namaDepan" value="<%= order.id %>" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
+                            </div>
 
-                <input <%= order.status === 'menunggu_anggota' ? 'checked' : ''  %>  type="radio" name="orderStatus" id="menunggu_anggota" value="menunggu_anggota">
-                <label for="host">Menunggu anggota</label>
+                            <!-- Update status -->
+                            <div class="mb-6">
+                                <label class="block mb-2 text-sm text-gray-600 dark:text-gray-400" for="orderStatus">Order Status :</label>
+                                <div>
+                                    <label class="inline-flex items-center mt-3">
+                                        <input <%= order.status === 'menunggu_pembayaran' ? 'checked' : ''  %>  class="form-radio h-5 w-5 text-gray-600" type="radio" name="orderStatus" id="menunggu_pembayaran" value="menunggu_pembayaran">
+                                        <span class="ml-2 text-gray-700">Menunggu pembayaran</span>
+                                    </label>
+                                </div>
+                                
+                                <div>
+                                    <label class="inline-flex items-center mt-3">
+                                        <input <%= order.status === 'menunggu_anggota' ? 'checked' : ''  %>  class="form-radio h-5 w-5 text-gray-600" type="radio" name="orderStatus" id="menunggu_anggota" value="menunggu_anggota">
+                                        <span class="ml-2 text-gray-700">Menunggu anggota</span>
+                                    </label>
+                                </div>
 
-                <input <%= order.status === 'active' ? 'checked' : ''  %>  type="radio" name="orderStatus" id="active" value="active">
-                <label for="host">Active</label></p>
-
-                <p><button type="submit">Submit</button></p> 
-            </form> 
+                                <div>
+                                    <label class="inline-flex items-center mt-3">
+                                        <input <%= order.status === 'active' ? 'checked' : ''  %>  class="form-radio h-5 w-5 text-gray-600" type="radio" name="orderStatus" id="active" value="active">
+                                        <span class="ml-2 text-gray-700">Active</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <button type="submit" class="w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none">Update</button>
+                            </div>
+                            <p class="text-base text-center text-gray-400" id="result">
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-</div>
 </main>
 
 <footer>
