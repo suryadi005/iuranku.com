@@ -5,6 +5,8 @@ const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 const basicAuth = require('express-basic-auth')
+var methodOverride = require('method-override')
+var morgan = require('morgan')
 // modules
 const manageOrder = require('./pkg/manage-order')
 const manageGroup = require('./pkg/manage-group')
@@ -33,12 +35,30 @@ const basicAuthMiddleware = basicAuth({
 
 app.set('view engine', 'ejs')
 app.set('trust proxy', 1 )
+app.use(morgan('combined'))
 app.use('/admin', basicAuthMiddleware)
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(sessionMiddleware)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
+app.use(bodyParser.urlencoded())
+app.use(methodOverride(function (req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method
+    delete req.body._method
+    return method
+  }
+}))
+
+app.use(function(req,res,next){
+    console.log({
+        header: req.headers,
+        body: req.body
+    })
+    next()
+})
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');

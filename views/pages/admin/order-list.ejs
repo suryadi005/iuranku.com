@@ -28,6 +28,7 @@
                         <th class="px-16 py-2">Tipe User</th>
                         <th class="px-16 py-2">Email</th>
                         <th class="px-16 py-2">No Hp</th>
+                        <th class="px-16 py-2">Status</th>
                         <th class="px-16 py-2">Action</th>
                     </tr>
                 </thead>
@@ -40,8 +41,13 @@
                             <td><%= orders[i].typeMember %></td>
                             <td><%= orders[i].email %></td>
                             <td><%= orders[i].noHp %></td>
+                            <td><%= orders[i].status %></td>
                             <td>
                                 <a href="/admin/orders/<%= orders[i].id %>/update-status" type="button" class="bg-indigo-500 text-white px-4 py-2 border rounded-md hover:bg-white hover:border-indigo-500 hover:text-black " >Update status</a>
+                                <form style="display: inline-block;" action="/orders/<%= orders[i].id %>" method="POST">
+                                    <input type="hidden" name="_method" value="delete"/>
+                                    <input onClick='return confirmSubmit()' type="submit" class="bg-red-500 text-white px-4 py-2 border rounded-md hover:bg-white hover:border-red-500 hover:text-black " value="Delete" />
+                                </form>
                             </td>
                         </tr>
                     <% } %>
@@ -111,6 +117,19 @@
 <footer>
     <%- include('../../partials/footer'); %>
 </footer>
+
+<script LANGUAGE="JavaScript">
+ 
+    function confirmSubmit()
+    {
+    var agree=confirm("Are you sure you wish to continue?");
+    if (agree)
+     return true ;
+    else
+     return false ;
+    }
+    // -->
+    </script>
 
 </body>
 </html>

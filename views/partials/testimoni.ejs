@@ -84,34 +84,37 @@
 					</div>
 
 					<div class="flex my-4 justify-center items-center">
-						<button 
+                        <button 
+                            style="background-image: url(images/debi-testimoni.png); object-fit: cover; background-size: cover;"
 							@click.prevent="testimonialActive = 1" 
 							class="text-center font-bold shadow-xs focus:outline-none focus:shadow-outline inline-block rounded-full mx-2"
 							:class="{'h-12 w-12 opacity-25 bg-orange-300 text-gray-600': testimonialActive != 1, 'h-16 w-16 opacity-100 bg-orange-600 text-white': testimonialActive == 1 }"	
-						>JD</button>
-						<button 
+						></button>
+                        <button 
+                            style="background-image: url(images/isna-testimoni.png); object-fit: cover; background-size: cover;"
 							@click.prevent="testimonialActive = 2" 
 							class="text-center font-bold shadow-xs focus:outline-none focus:shadow-outline h-16 w-16 inline-block bg-orange-600 rounded-full mx-2"
 							:class="{'h-12 w-12 opacity-25 bg-orange-300 text-gray-600': testimonialActive != 2, 'h-16 w-16 opacity-100 bg-orange-600 text-white': testimonialActive == 2 }"	
-						>WD</button>
+						></button>
 						<button 
-							@click.prevent="testimonialActive = 3" 
+                            @click.prevent="testimonialActive = 3" 
+                            style="background-image: url(images/azwar-testimoni.png); object-fit: cover; background-size: cover;"
 							class="text-center font-bold shadow-xs focus:outline-none focus:shadow-outline h-12 w-12 inline-block bg-orange-600 rounded-full mx-2"
 							:class="{'h-12 w-12 opacity-25 bg-orange-300 text-gray-600': testimonialActive != 3, 'h-16 w-16 opacity-100 bg-orange-600 text-white': testimonialActive == 3 }"
-						>JW</button>
+						></button>
 					</div>
 					 
 					<div class="flex justify-center px-6 pt-2 pb-6 md:py-6">
 						<div class="text-center" x-show="testimonialActive == 1">
-							<h2 class="text-sm md:text-base font-bold text-gray-700 leading-tight">John Doe</h2>
+							<h2 class="text-sm md:text-base font-bold text-gray-700 leading-tight">Debi Melisa</h2>
 						</div>
 
 						<div class="text-center" x-show="testimonialActive == 2">
-							<h2 class="text-sm md:text-base font-bold text-gray-700 leading-tight">Winter Doe</h2>
+							<h2 class="text-sm md:text-base font-bold text-gray-700 leading-tight">Isna Saidana</h2>
 						</div>
 
 						<div class="text-center" x-show="testimonialActive == 3">
-							<h2 class="text-sm md:text-base font-bold text-gray-700 leading-tight">John Wick</h2>
+							<h2 class="text-sm md:text-base font-bold text-gray-700 leading-tight">Azwar Anshor</h2>
 						</div>	 
 					</div>
 				</div>

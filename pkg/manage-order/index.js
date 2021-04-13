@@ -3,6 +3,12 @@ const Order = require('./models/order')
 const Group = require('../manage-group/models/group')
 const router = express.Router()
 
+const MAX_MEMBER = {
+    Netflix: 5,
+    Spotify: 6,
+    Youtube: 5,
+}
+
 function manageOrder (db) {
 
     // ######################################################################################### //
@@ -21,14 +27,7 @@ function manageOrder (db) {
         const totalPages = Math.ceil(total/limit)
         const currentPage = (offset/limit) +1 
         const orders = await Order.find({}).sort({createdAt: 'desc'}).skip(offset).limit(limit)
-        console.log({ 
-            orders: orders,
-            offset: offset,
-            total: total,
-            limit: limit,
-            totalPages: totalPages,
-            currentPage: currentPage
-        })
+
         res.render('pages/admin/order-list',{ 
             orders: orders,
             offset: offset,
@@ -127,6 +126,7 @@ function manageOrder (db) {
             const orderId = req.params.orderId
             const status = req.body.orderStatus
             const order = await Order.findById(orderId).session(session)
+            const layananMaxMembers = MAX_MEMBER[order.layanan]
             order.status = status
             await order.save({session})
             if (status === 'menunggu_anggota' && order.typeMember === 'host') {
@@ -142,8 +142,8 @@ function manageOrder (db) {
                     await order.save({session})
                 }
 
-                if (group.memberCount<5) {
-                    const orders= await Order.find({groupId:null, layanan:order.layanan}).limit( 5 - group.memberCount ).session(session)
+                if (group.memberCount < layananMaxMembers) {
+                    const orders= await Order.find({groupId:null, layanan:order.layanan, typeMember: { $ne: 'host' }, status: { $ne: 'menunggu_pembayaran'}}).limit( layananMaxMembers - group.memberCount ).sort({createdAt: 'desc'}).session(session)
                     const result = await Order.updateMany({
                         _id: { $in: orders.map(order => order._id) }
                     }, {
@@ -151,6 +151,19 @@ function manageOrder (db) {
                     }).session(session)
                     group.memberCount += result.n
                     await group.save({session})
+                }
+            }
+            else if(status === 'menunggu_anggota' && order.typeMember === 'regular') {
+                // find non full group
+                const group = await Group.findOne({
+                    layanan: order.layanan,
+                    memberCount: { $lt: layananMaxMembers },
+                }).session(session)
+                if (group) {
+                    group.memberCount += 1
+                    await group.save({session})
+                    order.groupId = group.id
+                    await order.save({session})
                 }
             }
 
@@ -166,9 +179,53 @@ function manageOrder (db) {
         
     })
 
+    //delete order
+    router.delete('/orders/:orderId', async function (req, res, next) {
+        const session = await db.startSession();
+
+        try {
+            session.startTransaction();
+
+            const orderId = req.params.orderId
+            const order = await Order.findById(orderId).session(session)
+            const layananMaxMembers = MAX_MEMBER[order.layanan]
+            await Order.deleteMany({_id: order.id}).session(session)
+            // Host berhenti bubarkan group
+            if (order.typeMember === 'host' && order.groupId) {
+                const group = await Group.findById(order.groupId).session(session)
+                await Order.updateMany({groupId: group.id}, {status: 'menunggu_anggota', groupId: null}).limit( layananMaxMembers - group.memberCount ).sort({createdAt: 'desc'}).session(session)
+                await group.delete()
+            }
+            // baca antrian dan jadikan anggota 
+            else if (order.groupId){
+                const group = await Group.findById(order.groupId).session(session)
+                if (group.memberCount <= layananMaxMembers) {
+                    const orders= await Order.find({groupId:null, layanan:order.layanan, typeMember:{$ne: 'host'}, status: { $ne: 'menunggu_pembayaran'}}).limit( layananMaxMembers - group.memberCount ).sort({createdAt: 'desc'}).session(session)
+                    const result = await Order.updateMany({
+                        _id: { $in: orders.map(order => order._id) }
+                    }, {
+                        groupId: group.id
+                    }).session(session)
+                    group.memberCount += result.n - 1   
+                    await group.save({session})
+                }
+            }
+            await session.commitTransaction();
+            res.redirect(`/admin/orders`)
+        } catch (e) {
+            await session.abortTransaction();
+            console.error(e)
+            next(e)
+        } finally {
+            session.endSession();
+        }
+        
+    })
+
     // create
     router.post('/orders', async (req, res, next) => {
         const layanan = req.body.layanan
+        const layananMaxMembers = MAX_MEMBER[layanan]
         const session = await db.startSession();
         try {
             let group;
@@ -181,10 +238,10 @@ function manageOrder (db) {
                 await session.commitTransaction();
                 return res.redirect(`/berhasil-daftar-host`)
             } else {
-                // find or create non full group
+                // find non full group
                 group = await Group.findOne({
                     layanan,
-                    memberCount: { $lt: 5 },
+                    memberCount: { $lt: layananMaxMembers },
                 }).session(session)
                 if (group) {
                     group.memberCount += 1
