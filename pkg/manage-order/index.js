@@ -168,7 +168,7 @@ function manageOrder (db) {
             }
 
             await session.commitTransaction();
-            res.redirect(`/admin/orders/${orderId}/update-status`)
+            res.redirect(`/admin/orders/`)
         } catch (e) {
             await session.abortTransaction();
             console.error(e)
