@@ -28,6 +28,7 @@
                         <th class="px-16 py-2">Tipe User</th>
                         <th class="px-16 py-2">Email</th>
                         <th class="px-16 py-2">No Hp</th>
+                        <th class="px-16 py-2">Group ID</th>
                         <th class="px-16 py-2">Status</th>
                         <th class="px-16 py-2">Action</th>
                     </tr>
@@ -41,6 +42,7 @@
                             <td><%= orders[i].typeMember %></td>
                             <td><%= orders[i].email %></td>
                             <td><%= orders[i].noHp %></td>
+                            <td><a class="text-blue-500" href="/groups/<%= orders[i].groupId %>"><%= orders[i].groupId %></a></td>
                             <td><%= orders[i].status %></td>
                             <td>
                                 <a href="/admin/orders/<%= orders[i].id %>/update-status" type="button" class="bg-indigo-500 text-white px-4 py-2 border rounded-md hover:bg-white hover:border-indigo-500 hover:text-black " >Update status</a>

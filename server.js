@@ -11,6 +11,7 @@ var morgan = require('morgan')
 const manageOrder = require('./pkg/manage-order')
 const manageGroup = require('./pkg/manage-group')
 const manageCron = require('./pkg/cron-jobs-node')
+const manageSeo = require('./pkg/manage-seo')
 const session = require('express-session')
 const path = require('path');
 
@@ -53,10 +54,9 @@ app.use(methodOverride(function (req, res) {
 }))
 
 app.use(function(req,res,next){
-    console.log({
-        header: req.headers,
-        body: req.body
-    })
+    const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+   res.locals.route = new URL(fullUrl)
+   console.log(res.locals.route)
     next()
 })
 
@@ -71,6 +71,7 @@ db.once('open', function() {
     app.use(manageOrder(db))
     app.use(manageGroup(db))
     app.use(manageCron(db))
+    app.use(manageSeo(db))
     //Not found
     app.use(function ( req, res, next) {
         res.render('pages/error404')
