@@ -6,7 +6,7 @@
 <body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
 
 <header>
-    <%- include('../partials/header'); %>
+    <%- include('../partials/header-daftar'); %>
 </header>
 
 <main>
@@ -83,7 +83,7 @@
                                         <div>
                                             <label class="inline-flex items-center mt-3">
                                                 <input type="radio" class="form-radio h-5 w-5 text-gray-600" name="typeMember" id="host" value="host"><span class="ml-2 text-gray-700">Host </span>
-                                                <a class="pl-2 text-blue-500" href="/user-host-info"> ( ? )</a>
+                                                <a class="pl-2 text-blue-500" href="/user-host-info?origin=daftar"> ( ? )</a>
                                             </label>
                                         </div>   
                                     </div>
@@ -149,10 +149,6 @@
         </div>
     </div>
 </main>
-
-<footer>
-    <%- include('../partials/footer'); %>
-</footer>
 <script>
     const daftarForm = document.getElementById('daftarForm')
     const tombolDaftar = document.getElementById('tombolDaftar')

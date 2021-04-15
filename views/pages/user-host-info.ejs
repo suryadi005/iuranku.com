@@ -7,7 +7,11 @@
 
 
 <header>
-    <%- include('../partials/header'); %>
+    <% if (route.search.includes('origin=daftar')) { %>
+        <%- include('../partials/header-daftar'); %>
+    <% } else {%>
+        <%- include('../partials/header'); %>
+    <% } %>
 </header>
 
 <main>
@@ -92,7 +96,9 @@
     </div>
 </main>
 <footer>
-    <%- include('../partials/footer'); %>
+    <% if  (route.search.includes('origin=daftar') === false) { %>
+        <%- include('../partials/footer'); %>
+    <% } %>
 </footer>
 
 </body>
