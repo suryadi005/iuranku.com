@@ -96,7 +96,9 @@
     </div>
 </main>
 <footer>
-    <% if  (route.search.includes('origin=daftar') === false) { %>
+    <% if (route.search.includes('origin=daftar')) { %>
+        <%- include('../partials/footer-daftar'); %>
+    <% } else {%>
         <%- include('../partials/footer'); %>
     <% } %>
 </footer>
