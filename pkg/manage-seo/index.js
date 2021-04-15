@@ -11,6 +11,11 @@ function manageSeo (db) {
         res.render('pages/robots-txt', { })
     })
 
+    router.get('/sitemap', async function(req, res) {
+        res.set('Content-Type', 'text/xml')
+        res.render('pages/sitemap',{})
+    })
+
     return router
 }
 
