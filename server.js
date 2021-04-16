@@ -65,33 +65,33 @@ app.set('view engine', 'ejs');
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-    console.log('Connected to Database')
-
-    // load modules
-    app.use(manageOrder(db))
-    app.use(manageGroup(db))
-    app.use(manageCron(db))
-    app.use(manageSeo(db))
-    //Not found
-    app.use(function ( req, res, next) {
-        res.render('pages/error404')
-    })
-    // error
-    app.use(function (error, req, res, next) {
-        console.error(error.stack)
-        res.status(error.status || 500)
-        console.log({error})
-        if (error.status === 404) {
-            res.render('pages/error404')
-        } else {
-            res.render('pages/error500', {
-                error
-            })
-        }
-    })
-    
-    // listen on port
-    app.listen(3001, function() {
-        console.log('listening on 3001')
-    })
 });
+console.log('Connected to Database')
+
+// load modules
+app.use(manageOrder(db))
+app.use(manageGroup(db))
+app.use(manageCron(db))
+app.use(manageSeo(db))
+//Not found
+app.use(function ( req, res, next) {
+    res.render('pages/error404')
+})
+// error
+app.use(function (error, req, res, next) {
+    console.error(error.stack)
+    res.status(error.status || 500)
+    console.log({error})
+    if (error.status === 404) {
+        res.render('pages/error404')
+    } else {
+        res.render('pages/error500', {
+            error
+        })
+    }
+})
+
+// listen on port
+app.listen(3001, function() {
+    console.log('listening on 3001')
+})
