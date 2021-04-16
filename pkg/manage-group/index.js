@@ -3,8 +3,6 @@ const Group = require('./models/group')
 const router = express.Router()
 
 function manageGroup (db) {
-    const groupsCollection = db.collection('groups')
-
     // Grub page
     router.get('/group', async function(req, res) {
         const netflixGroups = await Group.find({layanan:'Netflix'}).limit(3).populate('orders')
