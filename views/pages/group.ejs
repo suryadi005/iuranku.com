@@ -144,11 +144,11 @@
                             background-image: url(image.png);
                         "
                     >
-                        <div class="text-4xl text-gray-900 mt-4 ml-4">Group <%= i + 1 %></div>
+                        <div class="text-4xl text-gray-900 mt-4 ml-4">Group id: <%= i + 32 %></div>
                         <div class="progress-<%= spotifyGroups[i].id%>"></div>
                         <script>
                             new CircleProgress('.progress-<%= spotifyGroups[i].id%>', {
-                                max: 5,
+                                max: 6,
                                 value: parseInt('<%= spotifyGroups[i].memberCount %>'),
                                 textFormat: 'percent',
                             });
@@ -196,7 +196,7 @@
                             background-image: url(image.png);
                         "
                     >
-                        <div class="text-4xl text-gray-900 mt-4 ml-4">Group <%= i + 1 %></div>
+                        <div class="text-4xl text-gray-900 mt-4 ml-4">Group id:<%= i + 16 %></div>
                         <div class="progress-<%= youtubeGroups[i].id%>"></div>
                         <script>
                             new CircleProgress('.progress-<%= youtubeGroups[i].id%>', {
@@ -212,7 +212,7 @@
                     <ul class="text-gray-800 text-base px-6 mb-5"> 
                         <% for(var j = 0; j < youtubeGroups[i].orders.length; j++) {%>
                             <li>
-                                <div> <%= youtubeGroups[i].orders[j].namaDepan.split("").map(function(c,i){ return i ===0 ? c : " *"  }).join("") + " " +youtubeGroups[i].orders[j].namaBelakang.split("").map(function(c,i){ return i ===0 ? c : " *"  }).join("x") %></div>
+                                <div> <%= youtubeGroups[i].orders[j].namaDepan.split("").map(function(c,i){ return i ===0 ? c : " *"  }).join("") + " " +youtubeGroups[i].orders[j].namaBelakang.split("").map(function(c,i){ return i ===0 ? c : " *"  }).join(" *") %></div>
                             </li>
                         <% } %>
                     </ul>
