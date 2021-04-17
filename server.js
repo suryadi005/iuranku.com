@@ -12,6 +12,7 @@ const manageOrder = require('./pkg/manage-order')
 const manageGroup = require('./pkg/manage-group')
 const manageCron = require('./pkg/cron-jobs-node')
 const manageSeo = require('./pkg/manage-seo')
+const manageReferral = require('./pkg/manage-referral')
 const session = require('express-session')
 const path = require('path');
 
@@ -55,8 +56,7 @@ app.use(methodOverride(function (req, res) {
 
 app.use(function(req,res,next){
     const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-   res.locals.route = new URL(fullUrl)
-   console.log(res.locals.route)
+    res.locals.route = new URL(fullUrl)
     next()
 })
 
@@ -73,6 +73,7 @@ app.use(manageOrder(db))
 app.use(manageGroup(db))
 app.use(manageCron(db))
 app.use(manageSeo(db))
+app.use(manageReferral(db)) // harus sebagai module terakhir
 //Not found
 app.use(function ( req, res, next) {
     res.render('pages/error404')
