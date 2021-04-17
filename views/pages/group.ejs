@@ -98,7 +98,7 @@
                                 value: parseInt('<%= netflixGroups[i].memberCount %>'),
                                 textFormat: 'percent',
                             });
-                            </script>
+                        </script>
                     </div>
                     <div
                         class="pt-8 pl-4 pr-4 flex rounded-lg items-center text-gray-900"
@@ -158,6 +158,7 @@
                         class="pt-8 pl-4 pr-4 flex rounded-lg items-center text-gray-900"
                     >
                     <ul class="text-gray-800 text-base px-6 mb-5"> 
+                        <li >Anggota:</li>
                         <% for(var j = 0; j < spotifyGroups[i].orders.length; j++) {%>
                             <li>
                                 <div> <%= spotifyGroups[i].orders[j].namaDepan.split("").map(function(c,i){ return i ===0 ? c : " *"  }).join("") + " " +spotifyGroups[i].orders[j].namaBelakang.split("").map(function(c,i){ return i ===0 ? c : " *"  }).join("") %></div>
@@ -210,6 +211,7 @@
                         class="pt-8 pl-4 pr-4 flex rounded-lg items-center text-gray-900"
                     >
                     <ul class="text-gray-800 text-base px-6 mb-5"> 
+                        <li >Anggota:</li>
                         <% for(var j = 0; j < youtubeGroups[i].orders.length; j++) {%>
                             <li>
                                 <div> <%= youtubeGroups[i].orders[j].namaDepan.split("").map(function(c,i){ return i ===0 ? c : " *"  }).join("") + " " +youtubeGroups[i].orders[j].namaBelakang.split("").map(function(c,i){ return i ===0 ? c : " *"  }).join(" *") %></div>

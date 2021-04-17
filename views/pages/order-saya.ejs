@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
+
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main class="min-h-screen">
+    <div class="pt-24">
+        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+            <h1 class="my-4 text-5xl font-bold leading-tight">
+                <%= user.namaDepan + " " + user.namaBelakang%>
+            </h1> 
+          <!--Left Col-->
+          <div class="flex flex-col w-full md:w-5/5 justify-center items-start text-left md:text-left">
+            <div class= "leading-normal text-2xl mb-8">
+                <div class="flex flex-wrap justify-center">
+                    <% for(var i = 0; i < orders.length; i++) {%>
+                    <div class="p-4 xl:w-1/4 md:w-1/2 w-12/12 mb-12 " style="width: 320px;">
+                        <div
+                            class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
+                        >
+                            <span
+                                class="bg-indigo-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl"
+                                ><%= orders[i].layanan%></span
+                            >
+                            <div
+                                class="h-48"
+                                style="
+                                    background-image: url(image.png);
+                                "
+                            >
+                                <div class="text-center text-4xl text-gray-900 mt-4 ml-4">
+                                        <%= orders[i].typeMember %> <br>
+                                    
+                                </div>
+                                
+                            </div>
+                            <div class="pt-8 pl-4 pr-4 flex rounded-lg items-left text-gray-900">                                                            
+                                <ul class="text-gray-800 text-base px-6 mb-5"> 
+                                   <li>
+                                    <strong>Status:</strong><br><%= orders[i].status %> <br>
+                                   </li>
+                                   <li>
+                                    <strong>No HP:</strong><br> <%= orders[i].noHp %> <br>
+                                   </li>
+                                   <li>
+                                    <strong>Order id:</strong><br><%= orders[i]._id %>
+                                   </li>
+                                   <li>
+                                    <strong>Group id:</strong><br><a class="text-blue-500" href="/groups/<%= orders[i].groupId %>"><%= orders[i].groupId %></a>
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>                        
+                    </div>
+                    <% } %>
+                </div>   
+            </div>
+          </div>
+        </div>
+      </div>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+</body>
+</html>
