@@ -17,8 +17,6 @@ const manageGroup = require('./pkg/manage-group')
 const manageCron = require('./pkg/cron-jobs-node')
 const manageSeo = require('./pkg/manage-seo')
 const manageReferral = require('./pkg/manage-referral')
-const session = require('express-session')
-const path = require('path');
 
 const app = express()
 
