@@ -17,6 +17,7 @@ const manageGroup = require('./pkg/manage-group')
 const manageCron = require('./pkg/cron-jobs-node')
 const manageSeo = require('./pkg/manage-seo')
 
+const PORT = process.env.PORT || 3001
 const app = express()
 
 var connectionString = process.env.MONGODB_CONNECTION_STRING
@@ -103,6 +104,6 @@ app.use(function (error, req, res, next) {
 })
 
 // listen on port
-app.listen(3001, function() {
-    console.log('listening on 3001')
+app.listen(PORT, function() {
+    console.log('listening on ' + PORT)
 })
