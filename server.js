@@ -3,7 +3,6 @@ require('dotenv').config()
 const mongoose = require('mongoose');
 const express = require('express')
 const bodyParser= require('body-parser')
-const MongoClient = require('mongodb').MongoClient
 const basicAuth = require('express-basic-auth')
 var methodOverride = require('method-override')
 var morgan = require('morgan')
@@ -16,6 +15,7 @@ const manageOrder = require('./pkg/manage-order')
 const manageGroup = require('./pkg/manage-group')
 const manageCron = require('./pkg/cron-jobs-node')
 const manageSeo = require('./pkg/manage-seo')
+const manageReferral = require('./pkg/manage-referral')
 
 const PORT = process.env.PORT || 3001
 const app = express()
@@ -33,7 +33,7 @@ var store = new MongoDBStore({
 
 const sessionMiddleware = session({
     secret: 'keyboard cat',
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     cookie: {
         secure: false,
@@ -67,8 +67,8 @@ app.use(methodOverride(function (req, res) {
 
 app.use(function(req,res,next){
     const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-   res.locals.route = new URL(fullUrl)
-   console.log(res.locals.route)
+    res.locals.route = new URL(fullUrl)
+    req.session.flash = req.session.flash || {}
     next()
 })
 
@@ -77,33 +77,34 @@ app.set('view engine', 'ejs');
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-});
-console.log('Connected to Database')
-
-// load modules
-app.use(manageOrder(db))
-app.use(manageGroup(db))
-app.use(manageCron(db))
-app.use(manageSeo(db))
-//Not found
-app.use(function ( req, res, next) {
-    res.render('pages/error404')
-})
-// error
-app.use(function (error, req, res, next) {
-    console.error(error.stack)
-    res.status(error.status || 500)
-    console.log({error})
-    if (error.status === 404) {
+    console.log('Connected to Database')
+    
+    // load modules
+    app.use(manageOrder(db))
+    app.use(manageGroup(db))
+    app.use(manageCron(db))
+    app.use(manageSeo(db))
+    app.use(manageReferral(db)) // harus sebagai module terakhir
+    //Not found
+    app.use(function ( req, res, next) {
         res.render('pages/error404')
-    } else {
-        res.render('pages/error500', {
-            error
-        })
-    }
-})
-
-// listen on port
-app.listen(PORT, function() {
-    console.log('listening on ' + PORT)
-})
+    })
+    // error
+    app.use(function (error, req, res, next) {
+        console.error(error.stack)
+        res.status(error.status || 500)
+        console.log({error})
+        if (error.status === 404) {
+            res.render('pages/error404')
+        } else {
+            res.render('pages/error500', {
+                error
+            })
+        }
+    })
+    
+    // listen on port
+    app.listen(PORT, function() {
+        console.log('listening on ' + PORT)
+    })
+});

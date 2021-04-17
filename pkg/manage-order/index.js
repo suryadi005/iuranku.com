@@ -1,6 +1,8 @@
 const express = require('express')
 const Order = require('./models/order')
 const Group = require('../manage-group/models/group')
+const getContinueUrl = require('../get-continue-url')
+const updateReferralStats = require('../manage-referral/update-referral-stats')
 const User = require('../manage-user/models/user')
 const router = express.Router()
 
@@ -59,7 +61,6 @@ function manageOrder (db) {
             }
         }
         
-        console.log(req.session)
         res.render('pages/order-saya', context);
     })
 
@@ -121,12 +122,17 @@ function manageOrder (db) {
     });
     // daftar page
     router.get('/daftar', function(req, res) {
-        const errorDaftar = req.session.errorDaftar;
+        const errorDaftar = req.session.errorDaftar
+        const referralNeedRegister = req.session.flash.referralNeedRegister
+        const continueUrl = getContinueUrl(req.query)
         req.session.errorDaftar = undefined
-        req.session.save(function(err) {})
-
-
-        res.render('pages/daftar', {errorDaftar: errorDaftar});
+        req.session.flash.referralNeedRegister = undefined
+        req.session.save(function(err) { if (err) console.warn(err) })
+        res.render('pages/daftar', {
+            errorDaftar: errorDaftar,
+            continueUrl: continueUrl,
+            referralNeedRegister: referralNeedRegister
+        })
     });
     // ########################################################################################## //
 
@@ -251,24 +257,41 @@ function manageOrder (db) {
     router.post('/orders', async (req, res, next) => {
         const layanan = req.body.layanan
         const layananMaxMembers = MAX_MEMBER[layanan]
+        const continueUrl = getContinueUrl(req.query)
         const session = await db.startSession();
-        let user = await User.findOne({email: req.body.email}).session(session)
-        if (!user) {
-            user =  new User(req.body)
-            await user.save({session})
-        }
-        req.body.userId = user.id
         try {
-            let group;
             session.startTransaction();
+
+            let group;
+            let user = await User.findOne({ email: req.body.email }).session(session)
+
+            if (!user) {
+                user =  new User(req.body)
+                await user.save({session})
+            }
+
+            req.body.userId = user.id
 
             if (req.body.typeMember==="host") {
                 const order = new Order(req.body)
                 await order.save({session})
 
                 await session.commitTransaction();
+
+                if (req.session.referralId) {
+                    await updateReferralStats(req.session.referralId, { orderHostId: order.id })
+                    req.session.referralId = undefined
+                }
+
+                req.session.save(function(err) { if (err) console.warn(err) })
+
                 req.session.userId = user.id
-                return res.redirect(`/berhasil-daftar-host`)
+
+                if (continueUrl) {
+                    res.redirect(continueUrl)
+                } else {
+                    res.redirect(`/berhasil-daftar-host`)
+                }
             } else {
                 // find non full group
                 group = await Group.findOne({
@@ -289,24 +312,42 @@ function manageOrder (db) {
                 const order = new Order(req.body)
                 await order.save({session})
                 await session.commitTransaction();
+
+                if (req.session.referralId) {
+                    await updateReferralStats(req.session.referralId, { orderRegularId: order.id })
+                    req.session.referralId = undefined
+                    req.session.save(function(err) { if (err) console.warn(err) })
+                }
+
                 req.session.userId = user.id
+
                 if (!groupId) {
-                    return res.redirect(`/berhasil-mengantri-regular`)
+                    if (continueUrl) {
+                        return res.redirect(continueUrl)
+                    } else {
+                        return res.redirect(`/berhasil-mengantri-regular`)
+                    }
                 }
             }
-
-            res.redirect(`/groups/${group.id}`)
+            if (continueUrl) {
+                res.redirect(continueUrl)
+            } else {
+                res.redirect(`/groups/${group.id}`)
+            }   
         } catch (e) {
             console.error(e)
             await session.abortTransaction();
             if (e.code ===11000) {
-                req.session.errorDaftar = 'Email telah digunakan'
+                req.session.errorDaftar = 'Order dengan email yang kamu masukkan telah ada di proses menunggu pembayaran'
             } else {
                 req.session.errorDaftar = 'Terjadi kesalahan, silahkan coba beberapa saat lagi.'
             }
-            req.session.save(function(err) {})
-            
-            res.redirect('/daftar')
+            req.session.save(function(err) { if (err) console.warn(err) })
+            if (continueUrl) {
+                res.redirect('/daftar?continue=' + continueUrl.encodedFullPath)
+            } else {
+                res.redirect('/daftar')
+            }
         } finally {
             session.endSession();
         }

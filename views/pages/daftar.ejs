@@ -11,6 +11,22 @@
 
 <main>
     <div class="pt-24">
+        <% if (errorDaftar) { %>
+            <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+                <div class="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline"><%= errorDaftar %></span>
+                    </span>
+                </div>
+            </div>
+        <% } %>
+        <% if (referralNeedRegister) { %>
+            <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+                <div class="w-full bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline"><%= referralNeedRegister %></span>
+                    </span>
+                </div>
+            </div>
+        <% } %>
         <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
             <!--Left Col-->
             <div class="w-full md:w-3/6 py-6 text-center">
@@ -30,7 +46,7 @@
                                 <p class="text-gray-400 dark:text-gray-400">Silahkan isi form dibawah ini.</p>
                             </div>
                             <div class="m-7 text-gray-900">
-                                <form action="/orders" method="POST" id="daftarForm">
+                                <form action="/orders<%= continueUrl ? '?continue=' + continueUrl.encodedFullPath : '' %>" method="POST" id="daftarForm">
                                     <div class="mb-6">
                                         <label for="namaDepan" class="block mb-2 text-sm text-gray-600 dark:text-gray-400">Nama Depan</label>
                                         <input type="text" name="namaDepan" id="namaDepan" placeholder="Masukkan nama depan anda" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />

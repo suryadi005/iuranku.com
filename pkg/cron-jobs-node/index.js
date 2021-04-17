@@ -25,7 +25,6 @@ function manageCron (db) {
                 await group.save()
             }
             const deleteResult = await Order.deleteMany(expiredOrderQuery)
-            console.log(deleteResult)
         } catch (e) {
             console.error(e)
         }
