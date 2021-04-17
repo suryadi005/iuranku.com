@@ -34,7 +34,7 @@ var store = new MongoDBStore({
 
 const sessionMiddleware = session({
     secret: 'keyboard cat',
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     cookie: {
         secure: false,
@@ -69,6 +69,7 @@ app.use(methodOverride(function (req, res) {
 app.use(function(req,res,next){
     const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     res.locals.route = new URL(fullUrl)
+    req.session.flash = req.session.flash || {}
     next()
 })
 

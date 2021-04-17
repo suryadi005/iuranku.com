@@ -19,6 +19,14 @@
                 </div>
             </div>
         <% } %>
+        <% if (referralNeedRegister) { %>
+            <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+                <div class="w-full bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline"><%= referralNeedRegister %></span>
+                    </span>
+                </div>
+            </div>
+        <% } %>
         <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
             <!--Left Col-->
             <div class="w-full md:w-3/6 py-6 text-center">

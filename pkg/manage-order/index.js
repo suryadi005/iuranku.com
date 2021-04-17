@@ -61,7 +61,6 @@ function manageOrder (db) {
             }
         }
         
-        console.log(req.session)
         res.render('pages/order-saya', context);
     })
 
@@ -124,14 +123,16 @@ function manageOrder (db) {
     // daftar page
     router.get('/daftar', function(req, res) {
         const errorDaftar = req.session.errorDaftar
+        const referralNeedRegister = req.session.flash.referralNeedRegister
         const continueUrl = getContinueUrl(req.query)
         req.session.errorDaftar = undefined
-        req.session.save(function(err) { console.warn(err) })
-
+        req.session.flash.referralNeedRegister = undefined
+        req.session.save(function(err) { if (err) console.warn(err) })
         res.render('pages/daftar', {
             errorDaftar: errorDaftar,
-            continueUrl: continueUrl
-        });
+            continueUrl: continueUrl,
+            referralNeedRegister: referralNeedRegister
+        })
     });
     // ########################################################################################## //
 
@@ -258,15 +259,18 @@ function manageOrder (db) {
         const layananMaxMembers = MAX_MEMBER[layanan]
         const continueUrl = getContinueUrl(req.query)
         const session = await db.startSession();
-        let user = await User.findOne({email: req.body.email}).session(session)
-        if (!user) {
-            user =  new User(req.body)
-            await user.save({session})
-        }
-        req.body.userId = user.id
         try {
-            let group;
             session.startTransaction();
+
+            let group;
+            let user = await User.findOne({ email: req.body.email }).session(session)
+
+            if (!user) {
+                user =  new User(req.body)
+                await user.save({session})
+            }
+
+            req.body.userId = user.id
 
             if (req.body.typeMember==="host") {
                 const order = new Order(req.body)
@@ -277,8 +281,9 @@ function manageOrder (db) {
                 if (req.session.referralId) {
                     await updateReferralStats(req.session.referralId, { orderHostId: order.id })
                     req.session.referralId = undefined
-                    req.session.save(function(err) { console.warn(err) })
                 }
+
+                req.session.save(function(err) { if (err) console.warn(err) })
 
                 req.session.userId = user.id
 
@@ -311,7 +316,7 @@ function manageOrder (db) {
                 if (req.session.referralId) {
                     await updateReferralStats(req.session.referralId, { orderRegularId: order.id })
                     req.session.referralId = undefined
-                    req.session.save(function(err) { console.warn(err) })
+                    req.session.save(function(err) { if (err) console.warn(err) })
                 }
 
                 req.session.userId = user.id
@@ -337,7 +342,7 @@ function manageOrder (db) {
             } else {
                 req.session.errorDaftar = 'Terjadi kesalahan, silahkan coba beberapa saat lagi.'
             }
-            req.session.save(function(err) { console.warn(err) })
+            req.session.save(function(err) { if (err) console.warn(err) })
             if (continueUrl) {
                 res.redirect('/daftar?continue=' + continueUrl.encodedFullPath)
             } else {

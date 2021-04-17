@@ -34,6 +34,8 @@ function manageReferral (db) {
         const errorDaftarReferral = req.session.errorDaftarReferral
 
         if (!userId) {
+            req.session.flash.referralNeedRegister = 'Hanya user yang telah berlangganan yang bisa bergabung program undang teman iuranku'
+            req.session.save(function(err) { if (err) { console.warn(err) } })
             return res.redirect('/daftar?continue=' + req.originalUrl)
         }
 
@@ -54,6 +56,8 @@ function manageReferral (db) {
             const errorIncentiveWithdrawals = req.session.errorIncentiveWithdrawals
 
             if (!userId) {
+                req.session.flash.referralNeedRegister = 'Hanya user yang telah berlangganan yang bisa bergabung program undang teman iuranku'
+                req.session.save(function(err) { if (err) { console.warn(err) } })
                 return res.redirect('/daftar?continue=' + req.originalUrl)
             }
 
