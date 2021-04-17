@@ -3,7 +3,6 @@ require('dotenv').config()
 const mongoose = require('mongoose');
 const express = require('express')
 const bodyParser= require('body-parser')
-const MongoClient = require('mongodb').MongoClient
 const basicAuth = require('express-basic-auth')
 var methodOverride = require('method-override')
 var morgan = require('morgan')
