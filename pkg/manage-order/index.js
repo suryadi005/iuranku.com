@@ -126,7 +126,7 @@ function manageOrder (db) {
         const errorDaftar = req.session.errorDaftar
         const continueUrl = getContinueUrl(req.query)
         req.session.errorDaftar = undefined
-        req.session.save(function(err) {})
+        req.session.save(function(err) { console.warn(err) })
 
         res.render('pages/daftar', {
             errorDaftar: errorDaftar,
@@ -276,6 +276,8 @@ function manageOrder (db) {
 
                 if (req.session.referralId) {
                     await updateReferralStats(req.session.referralId, { orderHostId: order.id })
+                    req.session.referralId = undefined
+                    req.session.save(function(err) { console.warn(err) })
                 }
 
                 req.session.userId = user.id
@@ -308,6 +310,8 @@ function manageOrder (db) {
 
                 if (req.session.referralId) {
                     await updateReferralStats(req.session.referralId, { orderRegularId: order.id })
+                    req.session.referralId = undefined
+                    req.session.save(function(err) { console.warn(err) })
                 }
 
                 req.session.userId = user.id
@@ -333,7 +337,7 @@ function manageOrder (db) {
             } else {
                 req.session.errorDaftar = 'Terjadi kesalahan, silahkan coba beberapa saat lagi.'
             }
-            req.session.save(function(err) {})
+            req.session.save(function(err) { console.warn(err) })
             if (continueUrl) {
                 res.redirect('/daftar?continue=' + continueUrl.encodedFullPath)
             } else {
