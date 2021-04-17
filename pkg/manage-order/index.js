@@ -3,14 +3,16 @@ const Order = require('./models/order')
 const Group = require('../manage-group/models/group')
 const getContinueUrl = require('../get-continue-url')
 const updateReferralStats = require('../manage-referral/update-referral-stats')
-
+const User = require('../manage-user/models/user')
 const router = express.Router()
+
 
 const MAX_MEMBER = {
     Netflix: 5,
     Spotify: 6,
     Youtube: 5,
 }
+
 
 function manageOrder (db) {
 
@@ -39,6 +41,28 @@ function manageOrder (db) {
             totalPages: totalPages,
             currentPage: currentPage
         });
+    })
+
+    //order-saya-page
+    router.get('/order-saya', async function(req, res) {
+        let context = {
+            user: undefined,
+            orders: undefined
+        }
+        const userId = req.session.userId
+        if (userId) {
+            const user = await User.findById(userId)
+            const orders = await Order.find({
+                userId: userId
+            })
+            context = {
+                user,
+                orders
+            }
+        }
+        
+        console.log(req.session)
+        res.render('pages/order-saya', context);
     })
 
      //user-host-info-page
@@ -232,9 +256,14 @@ function manageOrder (db) {
     router.post('/orders', async (req, res, next) => {
         const layanan = req.body.layanan
         const layananMaxMembers = MAX_MEMBER[layanan]
-        const session = await db.startSession()
         const continueUrl = getContinueUrl(req.query)
-
+        const session = await db.startSession();
+        let user = await User.findOne({email: req.body.email}).session(session)
+        if (!user) {
+            user =  new User(req.body)
+            await user.save({session})
+        }
+        req.body.userId = user.id
         try {
             let group;
             session.startTransaction();
@@ -248,6 +277,8 @@ function manageOrder (db) {
                 if (req.session.referralId) {
                     await updateReferralStats(req.session.referralId, { orderHostId: order.id })
                 }
+
+                req.session.userId = user.id
 
                 if (continueUrl) {
                     res.redirect(continueUrl)
@@ -273,12 +304,13 @@ function manageOrder (db) {
                 // create order
                 const order = new Order(req.body)
                 await order.save({session})
-                
                 await session.commitTransaction();
 
                 if (req.session.referralId) {
                     await updateReferralStats(req.session.referralId, { orderRegularId: order.id })
                 }
+
+                req.session.userId = user.id
 
                 if (!groupId) {
                     if (continueUrl) {

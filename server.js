@@ -7,6 +7,10 @@ const MongoClient = require('mongodb').MongoClient
 const basicAuth = require('express-basic-auth')
 var methodOverride = require('method-override')
 var morgan = require('morgan')
+const session = require('express-session')
+const path = require('path');
+var MongoDBStore = require('connect-mongodb-session')(session);
+
 // modules
 const manageOrder = require('./pkg/manage-order')
 const manageGroup = require('./pkg/manage-group')
@@ -24,11 +28,20 @@ mongoose.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: t
 
 const db = mongoose.connection;
 
+var store = new MongoDBStore({
+    uri: connectionString,
+    collection: 'userSessions'
+  });
+
 const sessionMiddleware = session({
     secret: 'keyboard cat',
-    resave: false,
+    resave: true,
     saveUninitialized: true,
-    cookie: {secure: false }
+    cookie: {
+        secure: false,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    },
+    store: store
 })
 const basicAuthMiddleware = basicAuth({
     challenge: true,
