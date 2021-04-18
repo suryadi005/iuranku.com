@@ -15,7 +15,7 @@
         <% if(orders && orders.length > 0) {%> 
         <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
             <h1 class="my-4 text-5xl font-bold leading-tight">
-                <%= user.namaDepan + " " + user.namaBelakang%>
+                Halo, <%= user.namaDepan + " " + user.namaBelakang%>
             </h1> 
           <!--Left Col-->
           <div class="flex flex-col w-full md:w-5/5 justify-center items-start text-left md:text-left">
@@ -42,7 +42,7 @@
                             <div class="pt-8 pl-4 pr-4 flex rounded-lg items-left text-gray-900">                                                            
                                 <ul class="text-gray-800 text-base px-6 mb-5"> 
                                    <li>
-                                    <strong>Status:</strong><br><%= orders[i].status %> <br>
+                                    <strong>Status:</strong><br><a class="text-blue-500" href="/contact-us?origin=order-saya"><%= orders[i].status === 'menunggu_pembayaran' && !orders[i].groupId ? 'Sedang mengantri' : orders[i].status %></a><br>
                                    </li>
                                    <li>
                                     <strong>No HP:</strong><br> <%= orders[i].noHp %> <br>
