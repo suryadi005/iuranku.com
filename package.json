@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "tailwind:css": "postcss public/styles/tailwind.css -o public/styles/style.css",
+    "build": "npm run tailwind:css && npm run copy-assets",
+    "copy-assets": "node pkg/asset-url/copy.js",
+    "tailwind:css": "postcss assets/styles/tailwind.css -o assets/styles/style.css",
     "repl": "node ./bin/repl.js",
     "drop-indexes": "node ./bin/drop-indexes.js"
   },
@@ -21,6 +23,7 @@
     "express": "^4.17.1",
     "express-basic-auth": "^1.2.0",
     "express-session": "^1.17.1",
+    "fs-extra": "^9.1.0",
     "method-override": "^3.0.0",
     "mongodb": "^3.6.4",
     "mongoose": "^5.12.1",

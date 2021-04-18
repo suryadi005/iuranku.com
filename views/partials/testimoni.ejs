@@ -24,6 +24,18 @@
 				background-image: radial-gradient(#daae51 2px, transparent 2px);
 				background-size: 16px 16px;
       }
+
+			.x-bg-image-testi-1 {
+				background-image: url(<%= assetUrl('/images/debi-testimoni.png') %> ); object-fit: cover; background-size: cover;
+			}
+
+			.x-bg-image-testi-2 {
+				background-image: url(<%= assetUrl('/images/isna-testimoni.png') %> ); object-fit: cover; background-size: cover;
+			}
+
+			.x-bg-image-testi-3 {
+				background-image: url(<%= assetUrl('/images/azwar-testimoni.png') %> ); object-fit: cover; background-size: cover;
+			}
 		</style>
     </head>
 
@@ -79,22 +91,18 @@
 					</div>
 
 					<div class="flex my-4 justify-center items-center">
-                        <button 
-                            style="background-image: url(images/debi-testimoni.png); object-fit: cover; background-size: cover;"
+            <button
 							@click.prevent="testimonialActive = 1" 
-							class="text-center font-bold shadow-xs focus:outline-none focus:shadow-outline inline-block rounded-full mx-2"
+							class="x-bg-image-testi-1 text-center font-bold shadow-xs focus:outline-none focus:shadow-outline inline-block rounded-full mx-2"
 							:class="{'h-12 w-12 opacity-25 bg-orange-300 text-gray-600': testimonialActive != 1, 'h-16 w-16 opacity-100 bg-orange-600 text-white': testimonialActive == 1 }"	
 						></button>
-                        <button 
-                            style="background-image: url(images/isna-testimoni.png); object-fit: cover; background-size: cover;"
+						<button
 							@click.prevent="testimonialActive = 2" 
-							class="text-center font-bold shadow-xs focus:outline-none focus:shadow-outline h-16 w-16 inline-block bg-orange-600 rounded-full mx-2"
+							class="x-bg-image-testi-2 text-center font-bold shadow-xs focus:outline-none focus:shadow-outline h-16 w-16 inline-block bg-orange-600 rounded-full mx-2"
 							:class="{'h-12 w-12 opacity-25 bg-orange-300 text-gray-600': testimonialActive != 2, 'h-16 w-16 opacity-100 bg-orange-600 text-white': testimonialActive == 2 }"	
 						></button>
-						<button 
-                            @click.prevent="testimonialActive = 3" 
-                            style="background-image: url(images/azwar-testimoni.png); object-fit: cover; background-size: cover;"
-							class="text-center font-bold shadow-xs focus:outline-none focus:shadow-outline h-12 w-12 inline-block bg-orange-600 rounded-full mx-2"
+						<button @click.prevent="testimonialActive = 3"
+							class="x-bg-image-testi-3 text-center font-bold shadow-xs focus:outline-none focus:shadow-outline h-12 w-12 inline-block bg-orange-600 rounded-full mx-2"
 							:class="{'h-12 w-12 opacity-25 bg-orange-300 text-gray-600': testimonialActive != 3, 'h-16 w-16 opacity-100 bg-orange-600 text-white': testimonialActive == 3 }"
 						></button>
 					</div>

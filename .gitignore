@@ -1,3 +1,7 @@
 node_modules
 .env
 logs
+public/*
+!public/.gitkeep
+pkg/asset-url/manifest.js
+assets/styles/style.css
