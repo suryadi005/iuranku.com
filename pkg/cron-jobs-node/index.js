@@ -9,7 +9,7 @@ function manageCron (db) {
     cron.schedule('0 * * * *', async () => {
         try { 
             const date = new Date()
-            const maxAgeMinute =  240 // 24 jam (1440 menit)
+            const maxAgeMinute =  720 // 24 jam (1440 menit)
             date.setMinutes(date.getMinutes() - maxAgeMinute)
             const expiredOrderQuery = {
                 status: 'menunggu_pembayaran',
