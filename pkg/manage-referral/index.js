@@ -191,7 +191,10 @@ function manageReferral (db) {
     // public page
     router.get('/:referralCode', async function(req, res, next) {
         if (req.session.referralId) {
-            return res.redirect('/')
+            if (await Referral.exists({ referralId: req.session.referralId })) {
+                return res.redirect('/')
+            }
+            return next()
         }
     
         const referralCode = req.params.referralCode
@@ -203,7 +206,8 @@ function manageReferral (db) {
 
         req.session.referralId = referral.id
         req.session.save(function(err) { if (err) { console.warn(err) } })
-        res.redirect('/')
+        console.log({referral})
+        res.redirect('/?referralCode=' + referral.code)
     });
 
     return router
