@@ -26,6 +26,7 @@ function manageGroup (db) {
     // Grub page
     router.get('/groups/:groupId', async function(req, res, next) {
         try {
+            const userId = req.session.userId
             const groupId = req.params.groupId
             const group = await Group.findById(groupId).populate('orders')
             if (!group) {
@@ -33,8 +34,16 @@ function manageGroup (db) {
                 error.status = 404
                 return next(error)
             }
+            const currentUserOrder = group.orders.find(function(order){
+                return order.userId.toString() === userId
+            }) 
+            const expiredAt = new Date(currentUserOrder ? currentUserOrder.createdAt: undefined);
+
+            expiredAt.setHours(expiredAt.getHours() + 12);
             res.render('pages/group-status', {
-                group
+                group,
+                currentUserOrder,
+                expiredAt
             });
         }catch(error) {
             error.status = 404
