@@ -17,26 +17,24 @@ function main () {
     db.once('open', async () => {
       try {
         const orders = await Order.find({ userId: undefined })
-        const result = await Promise.all(orders.map((order) => {
-          return new Promise(async (resolveCreateUser, rejectCreateUser) => {
-            const session = await db.startSession();
-            try {
-              session.startTransaction();
-              const user = new User(order)
-              await user.save({ session })
-              order.userId = user.id
-              await order.save({ session })
-              await session.commitTransaction();
-              resolveCreateUser()
-            } catch (e) {
-              await session.abortTransaction();
-              rejectCreateUser()
-            } finally {
-              session.endSession()
-            }
-          })
-        }))
-        resolve(result)
+        for (let order of orders) {
+          const session = await db.startSession();
+          try {
+            session.startTransaction();
+            const user = new User(order)
+            await user.save({ session })
+            order.userId = user.id
+            await order.save({ session })
+            await session.commitTransaction();
+            resolveCreateUser()
+          } catch (e) {
+            await session.abortTransaction();
+            rejectCreateUser()
+          } finally {
+            session.endSession()
+          }
+        }
+        resolve({ success: true })
       } catch (err) {
         reject(err)
       }
