@@ -38,7 +38,7 @@ function main () {
         }))
         resolve(result)
       } catch (err) {
-        reject(result)
+        reject(err)
       }
     });
   })
