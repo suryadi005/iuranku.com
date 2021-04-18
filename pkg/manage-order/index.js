@@ -279,7 +279,7 @@ function manageOrder (db) {
                 await session.commitTransaction();
 
                 if (req.session.referralId) {
-                    await updateReferralStats(req.session.referralId, { orderHostId: order.id })
+                    await updateReferralStats(req.session.referralId, { orderHostId: order.id }, db)
                     req.session.referralId = undefined
                 }
 
@@ -314,7 +314,7 @@ function manageOrder (db) {
                 await session.commitTransaction();
 
                 if (req.session.referralId) {
-                    await updateReferralStats(req.session.referralId, { orderRegularId: order.id })
+                    await updateReferralStats(req.session.referralId, { orderRegularId: order.id }, db)
                     req.session.referralId = undefined
                     req.session.save(function(err) { if (err) console.warn(err) })
                 }
