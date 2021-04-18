@@ -50,7 +50,9 @@ app.set('view engine', 'ejs')
 app.set('trust proxy', 1 )
 app.use(morgan('combined'))
 app.use('/admin', basicAuthMiddleware)
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: '365 days'
+}))
 app.use(sessionMiddleware)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
