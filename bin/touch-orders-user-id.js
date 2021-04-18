@@ -13,23 +13,23 @@ function main () {
   return new Promise((resolve, reject) => {
     db.on('error', console.error.bind(console, 'connection error:'));
     db.on('error', (err) => reject(err));
-    
+
     db.once('open', async () => {
       try {
         const orders = await Order.find({ userId: undefined })
-        for (let order of orders) {
+        for (let i = 0; i < orders.length; i += 1) {
+          const order = orders[i]
           const session = await db.startSession();
           try {
             session.startTransaction();
             const user = new User(order)
             await user.save({ session })
-            order.userId = user.id
-            await order.save({ session })
+            await Order.updateOne({ userId: undefined }, { $set: { userId: user.id  }})
             await session.commitTransaction();
-            resolveCreateUser()
+            console.log({user, order})
           } catch (e) {
+            reject(e)
             await session.abortTransaction();
-            rejectCreateUser()
           } finally {
             session.endSession()
           }
