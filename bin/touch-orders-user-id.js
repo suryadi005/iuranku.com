@@ -49,6 +49,9 @@ main()
   .then((res) => {
     console.log(res)
   })
+  .catch((err) => {
+    console.error(err)
+  })
   .finally(async () => {
     await db.close()
     process.exit(0)
