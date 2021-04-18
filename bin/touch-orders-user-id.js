@@ -22,14 +22,17 @@ function main () {
           const session = await db.startSession();
           try {
             session.startTransaction();
-            const user = new User(order)
-            await user.save({ session })
+            let user = await User.findOne({ email: order.email })
+            if (!user) {
+              user = new User(order)
+              await user.save({ session })
+            }
             await Order.updateOne({ userId: undefined }, { $set: { userId: user.id  }})
             await session.commitTransaction();
             console.log({user, order})
           } catch (e) {
-            reject(e)
             await session.abortTransaction();
+            reject(e)
           } finally {
             session.endSession()
           }
