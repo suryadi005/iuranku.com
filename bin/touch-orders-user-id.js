@@ -24,7 +24,7 @@ function main () {
             session.startTransaction();
             let user = await User.findOne({ email: order.email })
             if (!user) {
-              user = new User(order)
+              user = new User(order.toJSON())
               await user.save({ session })
             }
             await Order.updateOne({ userId: undefined }, { $set: { userId: user.id  }})
