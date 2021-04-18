@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include('../partials/head'); %>
-    <script src="/external-scripts/circle-progress.js"></script>
+    <script src="<%= assetUrl('/external-scripts/circle-progress.js') %>"></script>
     <style>
     .hide-scroll-bar {
     -ms-overflow-style: none;
@@ -73,7 +73,7 @@
                                     class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
                                     style="background: black; width: 100%;"
                                 >
-                                <img src="/images/netflix.jpg" alt="netflix-logo" style="object-fit:scale-down; height:100%;">
+                                <img src="<%= assetUrl('/images/netflix.jpg') %>" alt="netflix-logo" style="object-fit:scale-down; height:100%;">
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                                     class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
                                     style="background: black; width: 100%;"
                                 >
-                                <img src="/images/spotify.png" alt="spotify-logo" style="object-fit:scale-down; height:100%;">
+                                <img src="<%= assetUrl('/images/spotify.png') %>" alt="spotify-logo" style="object-fit:scale-down; height:100%;">
                                 </div>
                             </div>
                         </div>
@@ -171,7 +171,7 @@
                                     class="bg-gray-50 h-full rounded-lg mb-6 flex flex-col relative overflow-hidden shadow-xl"
                                     style="background: black; width: 100%;"
                                 >
-                                <img src="/images/youtube.png" alt="youtube-logo" style="object-fit:scale-down; height:100%;">
+                                <img src="<%= assetUrl('/images/youtube.png') %>" alt="youtube-logo" style="object-fit:scale-down; height:100%;">
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 const Referral = require('./models/referral')
 
-async function updateReferralStats (referralId, { orderRegularId, orderHostId }) {
+async function updateReferralStats (referralId, { orderRegularId, orderHostId }, db) {
   const session = await db.startSession();
 
   try {

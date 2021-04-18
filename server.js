@@ -16,6 +16,7 @@ const manageGroup = require('./pkg/manage-group')
 const manageCron = require('./pkg/cron-jobs-node')
 const manageSeo = require('./pkg/manage-seo')
 const manageReferral = require('./pkg/manage-referral')
+const assetUrl = require('./pkg/asset-url')
 
 const PORT = process.env.PORT || 3001
 const app = express()
@@ -50,7 +51,9 @@ app.set('view engine', 'ejs')
 app.set('trust proxy', 1 )
 app.use(morgan('combined'))
 app.use('/admin', basicAuthMiddleware)
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: '365 days'
+}))
 app.use(sessionMiddleware)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -68,6 +71,7 @@ app.use(methodOverride(function (req, res) {
 app.use(function(req,res,next){
     const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     res.locals.route = new URL(fullUrl)
+    res.locals.assetUrl = assetUrl
     req.session.flash = req.session.flash || {}
     next()
 })
