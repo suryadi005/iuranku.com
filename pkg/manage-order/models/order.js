@@ -21,7 +21,7 @@ const OrderSchema = new mongoose.Schema({
     }
 });
 
-OrderSchema.index({ groupId: 1, email: 1, noHp: 1 }, { unique: true });
+OrderSchema.index({ groupId: 1, email: 1, typeMember: 1, layanan: 1 }, { unique: true });
 
 const Order = mongoose.model('Order', OrderSchema);
 

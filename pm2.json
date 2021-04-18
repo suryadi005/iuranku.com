@@ -1,0 +1,40 @@
+{ "apps": [
+        {
+          "exec_mode": "cluster_mode",
+          "script": "./server.js",
+          "name": "iuranku-canary-0",
+          "node_args": [ "--harmony" ],
+          "env": {
+            "PORT": 3000,
+            "NODE_ENV": "production"
+          },
+          "error_file": "./logs/iuranku-canary-0.err.log",
+          "out_file": "./logs/iuranku-canary--0.out.log"
+        },
+        {
+          "exec_mode": "cluster_mode",
+          "script": "./server.js",
+          "name": "iuranku-production-0",
+          "node_args": [ "--harmony" ],
+          "env": {
+            "PORT": 3001,
+            "NODE_ENV": "production"
+          },
+          "error_file": "./logs/iuranku-production-0.err.log",
+          "out_file": "./logs/iuranku-production-0.out.log"
+        },
+	{
+          "exec_mode": "cluster_mode",
+          "script": "./server.js",
+          "name": "iuranku-production-1",
+          "node_args": [ "--harmony" ],
+          "env": {
+            "PORT": 3002,
+            "NODE_ENV": "production"
+          },
+          "error_file": "./logs/iuranku-production-1.err.log",
+          "out_file": "./logs/iuranku-production-1.out.log"
+        }
+   ]
+   }
+  

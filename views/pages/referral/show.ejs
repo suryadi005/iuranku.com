@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../../partials/head'); %>
+</head>
+<body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
+
+
+<header>
+    <%- include('../../partials/header'); %>
+</header>
+
+<main class="min-h-screen">
+    <div class="pt-24">
+      <% if (errorIncentiveWithdrawals) { %>
+        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+            <div class="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline"><%= errorIncentiveWithdrawals %></span>
+                </span>
+            </div>
+        </div>
+      <% } %>
+      <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+        <!--Left Col-->
+        <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
+          <h1 class="my-4 text-5xl font-bold leading-tight">
+              Performa referral kamu
+          </h1>
+        </div>
+        <!--Right Col-->
+        <div class="w-full md:w-3/5 py-6 text-center">
+          <%- include('../../partials/referral-show-image') %>
+        </div>
+      </div>
+      <section class="text-gray-600 body-font overflow-hidden bg-white border-b py-8">
+        <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center text-center">
+          <div class="text-gray-800 leading-none my-10 p-20 shadow-lg rounded-lg mx-auto inline-block">
+            <div class="text-sm">
+              URL referral kamu:
+            </div>
+            <div class="text-base font-bold mb-6">
+              https://iuranku.com/<%= referral.code %>
+            </div>
+            <div class="text-base">
+              Share url ini ke teman-temanmu dan dapatkan incentive dari iuranku.
+            </div>
+          </div>
+        </div>
+        <div class="w-full container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+          <div class="w-full">
+            <div class="text-2xl text-gray-800 font-bold leading-none mb-3">Sejak awal bergabung</div>
+            <div class="mb-6">
+              <div class="font-bold">Total incentive:</div>
+              <div><%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(referral.totalIncentive)%></div>
+            </div>
+            <div class="mb-6">
+              <div class="font-bold">Total user membayar:</div>
+              <div><%= referral.orderRegularIds.length + referral.orderHostIds.length %></div>
+            </div>
+          </div>
+          <div class="w-full flex flex-wrap">
+            <div class="w-full text-2xl text-gray-800 font-bold leading-none mb-3">Sejak pencarian incentive terakhir</div>
+            <div class="w-full lg:w-1/2 p-0 lg:pr-4">
+                <!--Metric Card-->
+                <div class="bg-white border rounded shadow p-2">
+                    <div class="flex flex-row items-center">
+                        <div class="flex-shrink pr-2">
+                            <div class="rounded p-3 bg-green-600"><i class="fa fa-wallet fa-2x fa-fw fa-inverse"></i></div>
+                        </div>
+                        <div class="flex-1 text-right md:text-center">
+                            <h5 class="font-bold uppercase text-gray-500">Incentive</h5>
+                            <h3 class="font-bold text-2xl"><%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(referral.incentive) %><span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                        </div>
+                    </div>
+                </div>
+                <!--/Metric Card-->
+            </div>
+            <div class="w-full lg:w-1/2 p-0 lg:pl-2">
+                <!--Metric Card-->
+                <div class="bg-white border rounded shadow p-2">
+                    <div class="flex flex-row items-center">
+                        <div class="flex-shrink pr-4">
+                            <div class="rounded p-3 bg-indigo-600"><i class="fas fa-users fa-2x fa-fw fa-inverse"></i></div>
+                        </div>
+                        <div class="flex-1 text-right md:text-center">
+                            <h5 class="font-bold uppercase text-gray-500">User membayar</h5>
+                            <h3 class="font-bold text-3xl"><%= referral.orderRegularIds.length + referral.orderHostIds.length - referral.totalPaidOrderIncentive %><span class="text-indigo-500"><i class="fas fa-exchange-alt"></i></span></h3>
+                        </div>
+                    </div>
+                </div>
+                <!--/Metric Card-->
+            </div>
+          </div>
+        </div>
+        <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t my-8"></div>
+        <div class="mb-6 w-full text-center">
+          <form action="/incentive-withdrawals" method="POST">
+            <button id="tombolDaftar" type="submit" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+              Cairkan incentive
+            </button>
+          </form>
+        </div>
+        <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t my-8"></div>
+        <% if (incentiveWithdrawals.length > 0) { %>
+          <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+            <div class="text-2xl text-gray-800 font-bold leading-none mb-3">History pencarian</div>
+            <table class="w-full table-auto text-center">
+              <thead class="justify-between">
+                  <tr class="bg-gray-800 text-gray-300">
+                      <th class="px-16 py-2">No.</th>
+                      <th class="px-16 py-2">Jumlah</th>
+                      <th class="px-16 py-2">Tanggal request</th>
+                      <th class="px-16 py-2">Status</th>
+                  </tr>
+              </thead>
+              <tbody class="bg-gray-200">
+                  <% for(var i = 0; i < incentiveWithdrawals.length; i++) {%>
+                      <tr class="bg-white border-4 border-gray-200 text-center ml-2 font-semibold text-gray-900">
+                          <td><%= (i+1) %> </td>
+                          <td><%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(incentiveWithdrawals[i].amount) %></td>
+                          <td><%= (new Date(incentiveWithdrawals[i].createdAt)).toLocaleDateString() %></td>
+                          <td><%= !!incentiveWithdrawals[i].updatedAt ? 'Berhasil' : 'Sedang diproses' %></td>
+                      </tr>
+                  <% } %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </section>
+</main>
+
+<footer>
+    <%- include('../../partials/footer'); %>
+</footer>
+
+</body>
+</html>
