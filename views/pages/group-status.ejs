@@ -19,7 +19,7 @@
                 Halaman Group <%=group.layanan %> Kamu
             </h1>
             <p>
-              <% if (currentUserOrder.status === 'menunggu_pembayaran'){%>
+              <% if (currentUserOrder && currentUserOrder.status === 'menunggu_pembayaran'){%>
                 <div class="leading-normal text-2xl mb-8">
                   Posisi kamu di dalam group telah di booking. Segera lakukan pembayaran sebelum:
                 </div>
