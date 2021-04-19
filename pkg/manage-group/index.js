@@ -1,10 +1,13 @@
+const cacheControl = require('express-cache-controller')
 const express = require('express')
 const Group = require('./models/group')
 const router = express.Router()
 
 function manageGroup (db) {
     // Grub page
-    router.get('/group', async function(req, res) {
+    router.get('/group', cacheControl({
+        maxAge: 300000 // 5 minutes
+    }), async function(req, res) {
         const netflixGroups = await Group.find({layanan:'Netflix'}).limit(9).populate('orders')
         const spotifyGroups = await Group.find({layanan:'Spotify'}).limit(9).populate('orders')
         const youtubeGroups = await Group.find({layanan:'Youtube'}).limit(9).populate('orders')
