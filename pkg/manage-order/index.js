@@ -1,4 +1,5 @@
 const express = require('express')
+const cacheControl = require('express-cache-controller')
 const Order = require('./models/order')
 const Group = require('../manage-group/models/group')
 const getContinueUrl = require('../get-continue-url')
@@ -105,9 +106,12 @@ function manageOrder (db) {
     })
 
     // index page
-    router.get('/', function(req, res) {
+    router.get('/', cacheControl({
+        maxAge: 300 // 5 minutes
+    }), function(req, res) {
         res.render('pages/index', {});
     });
+
     // provider page
     router.get('/provider', function(req, res) {
         res.render('pages/provider');
