@@ -38,7 +38,7 @@ const sessionMiddleware = session({
     saveUninitialized: true,
     cookie: {
         secure: false,
-        maxAge: 2592000000
+        maxAge: process.env.NODE_ENV === 'production' ? 2592000000 : 0
     },
     store: store
 })
