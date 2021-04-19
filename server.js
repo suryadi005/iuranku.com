@@ -52,7 +52,7 @@ app.set('trust proxy', 1 )
 app.use(morgan('combined'))
 app.use('/admin', basicAuthMiddleware)
 app.use(express.static(path.join(__dirname, 'public'), {
-    maxAge: '365 days'
+    maxAge: process.env.NODE_ENV === 'production' ? '365 days' : 0
 }))
 app.use(sessionMiddleware)
 app.use(bodyParser.json())
