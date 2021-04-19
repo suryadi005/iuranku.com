@@ -6,7 +6,7 @@ const router = express.Router()
 function manageGroup (db) {
     // Grub page
     router.get('/group', cacheControl({
-        maxAge: 300000 // 5 minutes
+        maxAge: 300 // 5 minutes
     }), async function(req, res) {
         const netflixGroups = await Group.find({layanan:'Netflix'}).limit(9).populate('orders')
         const spotifyGroups = await Group.find({layanan:'Spotify'}).limit(9).populate('orders')
