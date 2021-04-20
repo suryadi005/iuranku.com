@@ -81,7 +81,7 @@ function manageOrder (db) {
     })
 
        //terms-page
-       router.get('/terms', function(req, res) {
+       router.get('/terms-conditions', function(req, res) {
         res.render('pages/terms');
     })
 
