@@ -241,6 +241,17 @@
         </div>
       </div>
     </section>
+    <div class="bg-gray-50">
+      <div class="container mx-auto px-2 pt-4 pb-12 text-gray-800">
+        <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+          Pengguna iuranku
+        </h1>
+        <div class="w-full mb-4">
+          <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
+        </div>
+      </div>
+    </div>
+    <div id="our-users"></div>
     <section class="bg-gray-100 py-8">
       <div class="container mx-auto px-2 pt-4 pb-12 text-gray-800">
         <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
@@ -395,6 +406,9 @@
             </div>
           </div>
         </div>
+        <div class="text-center">
+          <a href="/listharga" class="text-blue-500">Lihat detail harga</a>
+        </div>
       </div>
           <%- include('../partials/testimoni') %>
     </section>
@@ -438,4 +452,17 @@
         <%- include('../partials/footer'); %>
 
   </body>
+  <script defer lang="javascript">
+    setTimeout(() => {
+      const ourUsersParentElement = document.querySelector('#our-users')
+      fetch('/group').then(function (res) {
+        res.text().then(function (ourUsersRawHtml) {
+          const responseHtml = document.createElement( 'html' )
+          responseHtml.innerHTML = ourUsersRawHtml
+          const responseOurUsersElement = responseHtml.querySelector('#our-users')
+          ourUsersParentElement.appendChild(responseOurUsersElement)
+        })
+      })
+    }, 1000);
+  </script>
 </html>
