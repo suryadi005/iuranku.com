@@ -86,7 +86,8 @@ function manageGroup (db) {
                 group,
                 currentUserOrder,
                 expiredAt,
-                orderPaymentContext
+                orderPaymentContext,
+                grossAmount: LAYANAN_HARGA_MAP[currentUserOrder.layanan]
             });
         }catch(error) {
             error.status = 404
