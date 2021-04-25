@@ -6,9 +6,16 @@ const router = express.Router()
 
 const LAYANAN_HARGA_MAP = {
     Netflix: 44000,
-    Spotify: 44000,
-    Youtube: 44000,
+    Spotify: 20000,
+    Youtube: 24600,
 }
+
+const LAYANAN_HARGA_ORIGINAL_MAP = {
+    Netflix: 50000,
+    Spotify: 25000,
+    Youtube: 30000,
+}
+
 
 function manageGroup (db) {
     // Grub page
@@ -87,7 +94,8 @@ function manageGroup (db) {
                 currentUserOrder,
                 expiredAt,
                 orderPaymentContext,
-                grossAmount: LAYANAN_HARGA_MAP[currentUserOrder.layanan]
+                grossAmount: LAYANAN_HARGA_MAP[currentUserOrder.layanan],
+                originalGrossAmount: LAYANAN_HARGA_ORIGINAL_MAP[currentUserOrder.layanan],
             });
         }catch(error) {
             error.status = 404

@@ -33,7 +33,7 @@
               </div>
               <div class="leading-normal text-2xl mb-8 w-full text-center">
                 <div class="inline-block px-6 py-2 bg-gray-100 mx-auto text-gray-900 shadow-lg font-bold">
-                  <%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(grossAmount) %> 
+                  <span class="text-base line-through pr-2"><%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(originalGrossAmount) %></span><span><%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(grossAmount) %></span>
                 </div>
               </div>
               <% if (orderPaymentContext !== undefined) {%>
