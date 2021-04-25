@@ -50,7 +50,11 @@ const basicAuthMiddleware = basicAuth({
 
 app.set('view engine', 'ejs')
 app.set('trust proxy', 1 )
-app.use(helmet())
+app.use(
+    helmet({
+        contentSecurityPolicy: false,
+    })
+);
 app.use(morgan('combined'))
 app.use('/admin', basicAuthMiddleware)
 app.use(express.static(path.join(__dirname, 'public'), {
