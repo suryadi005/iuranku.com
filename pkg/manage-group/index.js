@@ -35,9 +35,9 @@ function manageGroup (db) {
     router.get('/group', cacheControl({
         maxAge: 300 // 5 minutes
     }), async function(req, res) {
-        const netflixGroups = await Group.find({layanan:'Netflix'}).limit(3).populate('orders')
-        const spotifyGroups = await Group.find({layanan:'Spotify'}).limit(3).populate('orders')
-        const youtubeGroups = await Group.find({layanan:'Youtube'}).limit(3).populate('orders')
+        const netflixGroups = await Group.find({layanan:'Netflix'}).limit(3).populate('orders').sort({createdAt: 'desc'})
+        const spotifyGroups = await Group.find({layanan:'Spotify'}).limit(3).populate('orders').sort({createdAt: 'desc'})
+        const youtubeGroups = await Group.find({layanan:'Youtube'}).limit(3).populate('orders').sort({createdAt: 'desc'})
 
         const netflixTotal = await Group.countDocuments({layanan: 'Netflix'}) + fakeGroups.netflix.length + FAKE_STARTS_FROM.netflix
         const spotifyTotal = await Group.countDocuments({layanan: 'Spotify'}) + fakeGroups.spotify.length + FAKE_STARTS_FROM.spotify
