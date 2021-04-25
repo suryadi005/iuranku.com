@@ -2,6 +2,7 @@ const cacheControl = require('express-cache-controller')
 const midtransClient = require('midtrans-client');
 const express = require('express')
 const Group = require('./models/group')
+const fakeGroups = require('./fake-groups')
 const router = express.Router()
 
 const LAYANAN_HARGA_MAP = {
@@ -16,6 +17,18 @@ const LAYANAN_HARGA_ORIGINAL_MAP = {
     Youtube: 30000,
 }
 
+const FAKE_STARTS_FROM = {
+    netflix: 114,
+    spotify: 80,
+    youtube: 33
+}
+
+
+const LAYANAN_MAX_MEMBER = {
+    Netflix: 5,
+    Spotify: 6,
+    Youtube: 5
+}
 
 function manageGroup (db) {
     // Grub page
@@ -26,17 +39,22 @@ function manageGroup (db) {
         const spotifyGroups = await Group.find({layanan:'Spotify'}).limit(3).populate('orders')
         const youtubeGroups = await Group.find({layanan:'Youtube'}).limit(3).populate('orders')
 
-        const netflixTotal = await Group.countDocuments({layanan: 'Netflix'})
-        const spotifyTotal = await Group.countDocuments({layanan: 'Spotify'})
-        const YoutubeTotal = await Group.countDocuments({layanan: 'Youtube'})
+        const netflixTotal = await Group.countDocuments({layanan: 'Netflix'}) + fakeGroups.netflix.length + FAKE_STARTS_FROM.netflix
+        const spotifyTotal = await Group.countDocuments({layanan: 'Spotify'}) + fakeGroups.spotify.length + FAKE_STARTS_FROM.spotify
+        const youtubeTotal = await Group.countDocuments({layanan: 'Youtube'}) + fakeGroups.youtube.length + FAKE_STARTS_FROM.youtube
+
+        fakeGroups.netflix = fakeGroups.netflix.slice(netflixGroups.length, fakeGroups.netflix.length)
+        fakeGroups.spotify = fakeGroups.spotify.slice(spotifyGroups.length, fakeGroups.spotify.length)
+        fakeGroups.youtube = fakeGroups.youtube.slice(youtubeGroups.length, fakeGroups.youtube.length)
 
         res.render('pages/group', {
-            netflixGroups,
-            spotifyGroups,
-            youtubeGroups,
+            netflixGroups: [...netflixGroups, ...fakeGroups.netflix],
+            spotifyGroups: [...spotifyGroups, ...fakeGroups.spotify],
+            youtubeGroups: [...youtubeGroups, ...fakeGroups.youtube],
             netflixTotal,
             spotifyTotal,
-            YoutubeTotal,
+            youtubeTotal,
+            LAYANAN_MAX_MEMBER
         });
     });
 
