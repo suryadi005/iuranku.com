@@ -13,10 +13,10 @@
         <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
           <p class="uppercase tracking-loose w-full">Akun premium lebih murah</p>
           <h1 class="my-4 text-5xl font-bold leading-tight">
-            Platform berlangganan bersama
+            Patungan berlangganan <br><span style="color: #222;">.</span><span style="margin-left: -1rem;" id="hero-layanan" class="text-indigo-500"></span>
           </h1>
           <p class="leading-normal text-2xl mb-8">
-            Berlangganan akun premium lebih murah dengan bayar patungan
+            Menghemat pengeluaran bulananmu untuk langganan akun premium hingga 76%
           </p>
           <a href="/daftar" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
             Daftar
@@ -107,7 +107,10 @@
   <section class="bg-gray-50 border-b py-8">
     <div class="container mx-auto flex flex-wrap pt-4 pb-12">
       <div class="bg-gray-50 text-gray-900 flex flex-wrap">
-          <div class="lg:pt-12 pt-6 w-full md:w-3/12 px-4 text-center">
+        Kamu dapat menggunakan iuranku dengan dua cara, sebagai user Host atau user Regular. Sebagai user Host, kamu dapat membagikan langganan paket multi-user/family-mu ke anggota group yang dibuatkan otomatis oleh iuranku. Sebagai user Regular, kamu dapat berlangganan bersama user Host dengan melakukan pembayaran patungan melalui iuranku dan mematuhi peraturan group yang kamu tergabung di dalamnya.
+      </div>
+      <div class="bg-gray-50 text-gray-900 flex flex-wrap">
+          <div class="lg:pt-12 pt-6 w-full md:w-3/12 text-center">
               <div class="h-52 relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                   <div class="px-4 py-5 flex-auto">
                       <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full text-green-500 bg-green-100 "><strong>1</strong></div>
@@ -473,15 +476,81 @@
   </body>
   <script defer lang="javascript">
     setTimeout(() => {
-      const ourUsersParentElement = document.querySelector('#our-users')
+      var ourUsersParentElement = document.querySelector('#our-users')
       fetch('/group').then(function (res) {
         res.text().then(function (ourUsersRawHtml) {
-          const responseHtml = document.createElement( 'html' )
+          var responseHtml = document.createElement( 'html' )
           responseHtml.innerHTML = ourUsersRawHtml
-          const responseOurUsersElement = responseHtml.querySelector('#our-users')
+          var responseOurUsersElement = responseHtml.querySelector('#our-users')
           ourUsersParentElement.appendChild(responseOurUsersElement)
         })
       })
     }, 1000);
+
+
+    function typeWriterFactory (txtArg) {
+      var i = 0;
+      var typeSpeed = 200; 
+      var removeSpeed = 100; 
+      var txt = txtArg
+      var el = document.getElementById("hero-layanan")
+
+      function type (rootResolve = undefined) {
+        return new Promise(function (resolve) {
+          if (i < txt.length) {
+            el.innerHTML += txt.charAt(i);
+            i++;
+            setTimeout(function () { type(rootResolve || resolve) }, typeSpeed);
+          } else {
+            setTimeout(function () {
+              if (rootResolve) {
+                rootResolve()
+              }
+              resolve()
+            }, 3000)
+          }
+        })
+      }
+
+      function remove (rootResolve = undefined) {
+        return new Promise(function (resolve) {
+          console.log(i)
+          if (i > 0) {
+            var currentText = el.innerHTML
+            el.innerHTML = currentText.slice(0, --i);
+            setTimeout(function () { remove(rootResolve || resolve) }, removeSpeed);
+          } else {
+            if (rootResolve) {
+              rootResolve()
+            }
+            resolve()
+          }
+        })
+      }
+  
+      return {
+        type,
+        remove,
+        next: undefined
+      }
+    }
+
+    var netflixTypeWriter = typeWriterFactory('Netflix')
+    var spotifyTypeWriter = typeWriterFactory('Spotify')
+    var youtubeTypeWriter = typeWriterFactory('Youtube')
+
+    netflixTypeWriter.next = spotifyTypeWriter
+    spotifyTypeWriter.next = youtubeTypeWriter
+    youtubeTypeWriter.next = netflixTypeWriter
+
+    function typeForever (curr) {
+      curr.type().then(function () {
+        curr.remove().then(function () {
+          typeForever(curr.next)
+        })
+      })
+    }
+
+    typeForever(netflixTypeWriter)
   </script>
 </html>
