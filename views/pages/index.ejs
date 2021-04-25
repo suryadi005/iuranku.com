@@ -65,7 +65,7 @@
                 Hemat pengeluaran bulanan
               </h3>
               <p class="text-gray-600 text-center mb-8">
-                Dengan membuka akun keluarga bersama, pengeluaran bulanan anda untuk Spotify, Netflix dan lain lain akan lebih murah dari pada membuka akun sendiri. 
+                Dengan patungan membayar akun keluarga (secara anonim), pengeluaran bulanan anda untuk Spotify, Netflix dan lain lain akan lebih murah dari pada membuka akun sendiri. Sistem patungan lah yang memungkinkan harga akun premium lebih murah, bukan karena akun curian atau praktik berbahaya lainnya seperti yang dilakukan penjual akun yang ramai di social media.
               </p>
             </div>    
           </div>
@@ -78,7 +78,7 @@
               Aman dan terpecaya
             </h3>
             <p class="text-gray-600 text-center mb-8">
-              Kami mencarikanmu teman untuk menjadi anggota akun keluarga, kami tidak menjual akun curian.
+              Di iuranku menggunakan sistem pencari anggota patungan secara otomatis. User lain tidak akan dapat melihat data pribadimu bahkan ketika pembayaran karena kami yang teruskan pembayaran user Anggota ke user Host dengan tidak memberikan info apapun selain nominal pembayaran.
             </p>
           </div>
         </div>
@@ -112,7 +112,7 @@
                   <div class="px-4 py-5 flex-auto">
                       <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full text-green-500 bg-green-100 "><strong>1</strong></div>
                       <h6 class="text-xl font-semibold">Daftar</h6>
-                      <p class="mt-2 mb-4 text-blueGray-500">Masukkan infomu dan kami akan mencarikan teman akun keluarga untukmu.</p>
+                      <p class="mt-2 mb-4 text-blueGray-500">Masukkan infomu dan iuranku akan otomatis memasukkanmu ke slot akun keluarga yang masih kosong.</p>
                   </div>
               </div>
           </div>
@@ -121,7 +121,7 @@
                   <div class="px-4 py-5 flex-auto">
                       <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full text-green-500 bg-green-100 "><strong>2</strong></div>
                       <h6 class="text-xl font-semibold">Bayar</h6>
-                      <p class="mt-2 mb-4 text-blueGray-500">Amankan posisimu di group akun keluarga dengan membayar terlebih dahulu.</p>
+                      <p class="mt-2 mb-4 text-blueGray-500">Amankan posisimu di slot akun keluarga dengan membayar terlebih dahulu.</p>
                   </div>
               </div>
           </div>
@@ -129,8 +129,8 @@
             <div class="h-52 relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                   <div class="px-4 py-5 flex-auto">
                       <div class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full text-green-500 bg-green-100 "><strong>3</strong></div>
-                      <h6 class="text-xl font-semibold">Pembuatan akun</h6>
-                      <p class="mt-2 mb-4 text-blueGray-500">Akun premiummu akan disiapkan dalam 4-24 jam. </p>
+                      <h6 class="text-xl font-semibold">Verifikasi pembayaran</h6>
+                      <p class="mt-2 mb-4 text-blueGray-500">iuranku akan memverifikasi pembayaranmu (dalam 4-24 jam). </p>
                   </div>
               </div>
           </div>
@@ -138,8 +138,8 @@
             <div class="h-52 relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                   <div class="px-4 py-5 flex-auto">
                       <img width="50" class="mx-auto" src="<%= assetUrl('/images/heart.svg') %>" alt="heart">
-                      <h6 class="text-xl font-semibold">Dapatkan akun</h6>
-                      <p class="mt-2 mb-4 text-blueGray-500">Selamat menikmati akun premiummu!</p>
+                      <h6 class="text-xl font-semibold">Selesai</h6>
+                      <p class="mt-2 mb-4 text-blueGray-500">Kamu akan dapatkan info langganan premiummu!</p>
                   </div>
               </div>
           </div>
@@ -284,9 +284,12 @@
                                   </div>
                             </td>
                             <td>
-                                <div class="text-xl text-gray-600 font-bold text-left">
-                                    44.000
-                                  </div>
+                              <div class="line-through inline">
+                                50.000
+                              </div>
+                              <div class="inline text-xl text-gray-600 font-bold text-left">
+                                44.000
+                              </div>
                             </td>
                             <td>
                                 <span class="text-sm">/ per bulan</span>
@@ -299,9 +302,12 @@
                                   </div>
                             </td>
                             <td>
-                                <div class="text-xl text-gray-600 font-bold text-left">
-                                    20.000
-                                  </div>
+                              <div class="line-through inline">
+                                25.000
+                              </div>
+                              <div class="inline text-xl text-gray-600 font-bold text-left">
+                                20.000
+                              </div>
                             </td>
                             <td>
                                 <span class="text-sm">/ per bulan</span>
@@ -314,9 +320,12 @@
                                   </div>
                             </td>
                             <td>
-                                <div class="text-xl text-gray-600 font-bold text-left">
-                                    24.600
-                                  </div>
+                              <div class="line-through inline">
+                                30.000
+                              </div>
+                              <div class="inline text-xl text-gray-600 font-bold text-left">
+                                24.600
+                              </div>
                             </td>
                             <td>
                                 <span class="text-sm">/ per bulan</span>
@@ -341,8 +350,10 @@
               <ul class="w-full text-center text-sm">
                 <li class="border-b py-4">Akun premium</li>
                 <li class="border-b py-4">Keamanan privasi</li>
+                <li class="border-b py-4">Tanpa kartu kredit</li>
                 <li class="border-b py-4">Pengingat pembayaran setiap bulan</li>
                 <li class="border-b py-4">Full support</li>
+                <li class="border-b py-4">Diskon lebih besar</li>
                 <li class="border-b py-4"><a href="/user-host-info" class="text-blue-500">Pelajari lebih lanjut</a></li>
               </ul>
             </div>
@@ -356,7 +367,10 @@
                                   </div>
                             </td>
                             <td>
-                                <div class="text-xl text-gray-600 font-bold text-left">
+                                <div class="line-through inline">
+                                  44.000
+                                </div>
+                                <div class="inline text-xl text-gray-600 font-bold text-left">
                                     37.200
                                   </div>
                             </td>
@@ -371,9 +385,12 @@
                                   </div>
                             </td>
                             <td>
-                                <div class="text-xl text-gray-600 font-bold text-left">
-                                    13.200
-                                  </div>
+                              <div class="line-through inline">
+                                20.000
+                              </div>
+                              <div class="inline text-xl text-gray-600 font-bold text-left">
+                                13.200
+                              </div>
                             </td>
                             <td>
                                 <span class="text-sm">/ per bulan</span>
@@ -386,9 +403,12 @@
                                   </div>
                             </td>
                             <td>
-                                <div class="text-xl text-gray-600 font-bold text-left">
-                                    17.800
-                                  </div>
+                              <div class="line-through inline">
+                                24.600
+                              </div>
+                              <div class="inline text-xl text-gray-600 font-bold text-left">
+                                17.800
+                              </div>
                             </td>
                             <td>
                                 <span class="text-sm">/ per bulan</span>
