@@ -25,6 +25,7 @@
     "express-cache-controller": "^1.1.0",
     "express-session": "^1.17.1",
     "fs-extra": "^9.1.0",
+    "helmet": "^4.5.0",
     "method-override": "^3.0.0",
     "midtrans-client": "^1.2.3",
     "mongodb": "^3.6.4",
