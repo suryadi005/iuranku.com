@@ -5,7 +5,13 @@ const Group = require('../manage-group/models/group')
 const getContinueUrl = require('../get-continue-url')
 const updateReferralStats = require('../manage-referral/update-referral-stats')
 const User = require('../manage-user/models/user')
+const sendWelcomeEmail = require('../manage-email/emails/welcome')
+const sendKonfirmasiEmail = require('../manage-email/emails/konfirmasi-pembayaran')
+const sendSelamatMenikmatiEmail = require('../manage-email/emails/selamat-menikmati')
+
+
 const router = express.Router()
+
 
 
 const MAX_MEMBER = {
@@ -162,6 +168,8 @@ function manageOrder (db) {
             const status = req.body.orderStatus
             const order = await Order.findById(orderId).session(session)
             const layananMaxMembers = MAX_MEMBER[order.layanan]
+            const context = {}
+            context.order = order
             order.status = status
             await order.save({session})
             if (status === 'menunggu_anggota' && order.typeMember === 'host') {
@@ -176,7 +184,7 @@ function manageOrder (db) {
                     order.groupId = group.id
                     await order.save({session})
                 }
-
+                
                 if (group.memberCount < layananMaxMembers) {
                     const orders= await Order.find({groupId:null, layanan:order.layanan, typeMember: { $ne: 'host' }, status: { $ne: 'menunggu_pembayaran'}}).limit( layananMaxMembers - group.memberCount ).sort({createdAt: 'desc'}).session(session)
                     const result = await Order.updateMany({
@@ -201,9 +209,28 @@ function manageOrder (db) {
                     await order.save({session})
                 }
             }
-
+            
             await session.commitTransaction();
             res.redirect(`/admin/orders/`)
+            try {
+                context.assetUrl = res.locals.assetUrl
+                sendKonfirmasiEmail(context, function(){
+                }, function(e){
+                    console.log('Konfirmasi email gagal', e)
+                })
+    
+                if ( order.status === 'active') {
+                    context.assetUrl = res.locals.assetUrl
+                    sendSelamatMenikmatiEmail(context, function(){
+                    }, function(e){
+                    console.log('Selamat menikmati email gagal', e)
+                    })
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+
         } catch (e) {
             await session.abortTransaction();
             console.error(e)
@@ -263,6 +290,7 @@ function manageOrder (db) {
         const layananMaxMembers = MAX_MEMBER[layanan]
         const continueUrl = getContinueUrl(req.query)
         const session = await db.startSession();
+        const context = {}
         try {
             session.startTransaction();
 
@@ -279,8 +307,9 @@ function manageOrder (db) {
             if (req.body.typeMember==="host") {
                 const order = new Order(req.body)
                 await order.save({session})
-
+                
                 await session.commitTransaction();
+                context.order = order
 
                 if (req.session.referralId) {
                     await updateReferralStats(req.session.referralId, { orderHostId: order.id }, db)
@@ -316,6 +345,7 @@ function manageOrder (db) {
                 const order = new Order(req.body)
                 await order.save({session})
                 await session.commitTransaction();
+                context.order = order
 
                 if (req.session.referralId) {
                     await updateReferralStats(req.session.referralId, { orderRegularId: order.id }, db)
@@ -338,6 +368,11 @@ function manageOrder (db) {
             } else {
                 res.redirect(`/groups/${group.id}`)
             }   
+            context.assetUrl = res.locals.assetUrl
+            sendWelcomeEmail(context, function(){
+            }, function(){
+                console.log('send welcome email gagal')
+            })
         } catch (e) {
             console.error(e)
             await session.abortTransaction();

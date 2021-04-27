@@ -16,6 +16,7 @@ const manageGroup = require('./pkg/manage-group')
 const manageCron = require('./pkg/cron-jobs-node')
 const manageSeo = require('./pkg/manage-seo')
 const manageReferral = require('./pkg/manage-referral')
+const manageEmail = require('./pkg/manage-email')
 const assetUrl = require('./pkg/asset-url')
 
 const PORT = process.env.PORT || 3001
@@ -88,6 +89,7 @@ db.once('open', function() {
     app.use(manageGroup(db))
     app.use(manageCron(db))
     app.use(manageSeo(db))
+    app.use(manageEmail(db))
     app.use(manageReferral(db)) // harus sebagai module terakhir
     //Not found
     app.use(function ( req, res, next) {
