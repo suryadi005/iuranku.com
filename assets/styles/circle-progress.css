@@ -1,0 +1,44 @@
+.hide-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+  .hide-scroll-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.circle-progress-value {
+  stroke-width: 25px;
+  stroke: hsl(100, 100%, 45%);
+  stroke-dasharray: 58 1;
+}
+.circle-progress-circle {
+  stroke: hsl(100, 100%, 85%);
+  stroke-width: 25px;
+  fill: hsl(100, 100%, 85%);
+}
+.circle-progress-text {
+  font-family: "Gotham";
+  font-size: 16px;
+  fill: hsl(100, 100%, 45%);
+}
+
+.progress-container-full .circle-progress-value {
+  stroke-width: 25px;
+stroke: hsl(0, 100%, 60%);
+  stroke-dasharray: 58 1;
+}
+.progress-container-full .circle-progress-circle {
+  stroke: hsl(0, 100%, 85%);
+  stroke-width: 25px;
+  fill: hsl(0, 100%, 85%);
+}
+.progress-container-full .circle-progress-text {
+  font-family: "Gotham";
+  font-size: 16px;
+  fill: hsl(0, 100%, 45%);
+}
+
+.circle-progress{
+  margin: 0 auto;
+  margin-top: 25px;
+}

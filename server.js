@@ -9,6 +9,7 @@ var morgan = require('morgan')
 const session = require('express-session')
 const path = require('path');
 var MongoDBStore = require('connect-mongodb-session')(session);
+const helmet = require('helmet');
 
 // modules
 const manageOrder = require('./pkg/manage-order')
@@ -50,6 +51,11 @@ const basicAuthMiddleware = basicAuth({
 
 app.set('view engine', 'ejs')
 app.set('trust proxy', 1 )
+app.use(
+    helmet({
+        contentSecurityPolicy: false,
+    })
+);
 app.use(morgan('combined'))
 app.use('/admin', basicAuthMiddleware)
 app.use(express.static(path.join(__dirname, 'public'), {

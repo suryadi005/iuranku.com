@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const GroupSchema = new mongoose.Schema({
     layanan: { type: String, required: true },
     memberCount: { type: Number, default: 0 },
+    createdAt: { type: Date, default: Date.now},
 });
 
 GroupSchema.virtual('orders', {
